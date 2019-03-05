@@ -26,6 +26,9 @@ class SchoolTest extends TestCase
 		]);
 	}
 
+	/*
+	 * Test an existing school can be updated
+	 */
 	public function test_a_school_can_be_updated()
 	{
 		$school = factory(School::class)->create([
