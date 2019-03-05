@@ -44,4 +44,21 @@ class SchoolTest extends TestCase
 			'name' => 'Test School Updated'
 		]);
 	}
+
+	/*
+	 * Test a school can be destroyed
+	 */
+	public function test_a_school_can_be_destroyed()
+	{
+		$school = factory(School::class)->create([
+			'name' => 'Test School Deleted'
+		]);
+
+		$school->destroy($school->id);
+
+		$this->assertDatabaseMissing('schools', [
+			'id' => $school->id,
+			'name' => 'Test School Deleted'
+		]);
+	}
 }
