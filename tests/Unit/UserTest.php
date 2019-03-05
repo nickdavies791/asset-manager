@@ -55,4 +55,25 @@ class UserTest extends TestCase
 			'email' => 'test_user_updated@test.com'
 		]);
 	}
+
+	/*
+	 * Test an existing user can be destroyed
+	 */
+	public function test_a_user_can_be_destroyed()
+	{
+		$role = factory(Role::class)->create();
+
+		$user = factory(User::class)->create([
+			'role_id' => $role->id,
+			'email' => 'test_user_deleted@test.com'
+		]);
+
+		$user->destroy($user->id);
+
+		$this->assertDatabaseMissing('users', [
+			'id' => $user->id,
+			'role_id' => $role->id,
+			'email' => 'test_user_deleted@test.com'
+		]);
+	}
 }
