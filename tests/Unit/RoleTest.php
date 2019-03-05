@@ -24,4 +24,23 @@ class RoleTest extends TestCase
     		'name' => 'Test Role'
 		]);
     }
+
+    /*
+     * Test an existing role can be updated
+     */
+    public function test_a_role_can_be_updated()
+	{
+		$role = factory(Role::class)->create([
+			'name' => 'Test Role'
+		]);
+
+		$role->update([
+			'name' => 'Test Role Updated'
+		]);
+
+		$this->assertDatabaseHas('roles', [
+			'id' => $role->id,
+			'name' => 'Test Role Updated'
+		]);
+	}
 }
