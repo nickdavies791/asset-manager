@@ -48,4 +48,23 @@ class AssetTest extends TestCase
 			'name' => 'Test Asset Updated'
 		]);
 	}
+
+	/*
+	 * Test an existing asset can be destroyed
+	 */
+	public function test_an_asset_can_be_destroyed()
+	{
+		$asset = factory(Asset::class)->create([
+			'tag' => '98765',
+			'name' => 'Test Asset Deleted'
+		]);
+
+		$asset->destroy($asset->id);
+
+		$this->assertDatabaseMissing('assets', [
+			'id' => $asset->id,
+			'tag' => '98765',
+			'name' => 'Test Asset Deleted'
+		]);
+	}
 }
