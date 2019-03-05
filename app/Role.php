@@ -19,7 +19,7 @@ class Role extends Model
 	 * Disable all timestamp fields.
 	 * @var boolean
 	 */
-	protected $timestamps = false;
+	public $timestamps = false;
 
 	/**
 	 * Returns the Users associated with a Role
