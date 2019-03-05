@@ -16,11 +16,12 @@ class RoleTest extends TestCase
      */
     public function test_a_role_can_be_stored()
     {
-    	factory(Role::class)->create([
+    	$role = factory(Role::class)->create([
     		'name' => 'Test Role'
 		]);
 
     	$this->assertDatabaseHas('roles', [
+    		'id' => $role->id,
     		'name' => 'Test Role'
 		]);
     }
