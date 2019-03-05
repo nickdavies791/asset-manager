@@ -26,4 +26,26 @@ class AssetTest extends TestCase
 			'name' => 'Test Asset'
 		]);
 	}
+
+	/*
+	 * Test an existing asset can be updated
+	 */
+	public function test_an_asset_can_be_updated()
+	{
+		$asset = factory(Asset::class)->create([
+			'tag' => '13579',
+			'name' => 'Test Asset'
+		]);
+
+		$asset->update([
+			'tag' => '12345',
+			'name' => 'Test Asset Updated'
+		]);
+
+		$this->assertDatabaseHas('assets', [
+			'id' => $asset->id,
+			'tag' => '12345',
+			'name' => 'Test Asset Updated'
+		]);
+	}
 }
