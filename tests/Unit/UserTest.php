@@ -32,4 +32,27 @@ class UserTest extends TestCase
 			'email' => 'test_user@test.com'
 		]);
 	}
+
+	/*
+	 * Test an existing user can be updated
+	 */
+	public function test_a_user_can_be_updated()
+	{
+		$role = factory(Role::class)->create();
+
+		$user = factory(User::class)->create([
+			'role_id' => $role->id,
+			'email' => 'test_user@test.com'
+		]);
+
+		$user->update([
+			'email' => 'test_user_updated@test.com'
+		]);
+
+		$this->assertDatabaseHas('users', [
+			'id' => $user->id,
+			'role_id' => $role->id,
+			'email' => 'test_user_updated@test.com'
+		]);
+	}
 }
