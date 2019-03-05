@@ -43,4 +43,21 @@ class RoleTest extends TestCase
 			'name' => 'Test Role Updated'
 		]);
 	}
+
+	/*
+	 * Test an existing role can be destroyed
+	 */
+	public function test_a_role_can_be_destroyed()
+	{
+		$role = factory(Role::class)->create([
+			'name' => 'Test Role'
+		]);
+
+		$role->destroy($role->id);
+
+		$this->assertDatabaseMissing('roles', [
+			'id' => $role->id,
+			'name' => 'Test Role'
+		]);
+	}
 }
