@@ -12,10 +12,10 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         factory(App\Role::class)->create([
-        	'name' => 'Read'
+        	'name' => 'Read Only'
 		]);
         factory(App\Role::class)->create([
-        	'name' => 'Contribute'
+        	'name' => 'Contributor'
 		]);
         factory(App\Role::class)->create([
         	'name' => 'Administrator'

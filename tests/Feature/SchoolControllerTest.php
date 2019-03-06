@@ -124,4 +124,24 @@ class SchoolControllerTest extends TestCase
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.success', 'School created!');
 	}
+
+	/*
+	 * Tests that users without the 'Administrator' role cannot create new schools
+	 */
+	public function test_non_admin_users_cannot_create_new_schools()
+	{
+		$readonly = factory(Role::class)->create(['name' => 'Read Only']);
+		$contributor = factory(Role::class)->create(['name' => 'Contributor']);
+
+		$userA = factory(User::class)->create(['role_id' => $readonly->id]);
+		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
+
+		$response = $this->actingAs($userA)->post(route('schools.store', ['name' => 'A New School']));
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+		
+		$response = $this->actingAs($userB)->post(route('schools.store', ['name' => 'A New School']));
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+	}
 }

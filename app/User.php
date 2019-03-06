@@ -62,4 +62,24 @@ class User extends Authenticatable
 	{
 		return $this->role()->where('name', 'Administrator')->exists();
 	}
+
+	/**
+	 * Returns whether the user has the 'Contributor' role
+	 *
+	 * @return bool
+	 */
+	public function isContributor()
+	{
+		return $this->role()->where('name', 'Contributor')->exists();
+	}
+
+	/**
+	 * Returns whether the user has the 'Reader' role
+	 *
+	 * @return bool
+	 */
+	public function isReadOnly()
+	{
+		return $this->role()->where('name', 'Read Only')->exists();
+	}
 }
