@@ -44,4 +44,12 @@ class User extends Authenticatable
 	{
 		return $this->belongsTo(Role::class);
 	}
+
+	/*
+	 * Returns the schools associated with a user
+	 */
+	public function schools()
+	{
+		return $this->belongsToMany(School::class);
+	}
 }

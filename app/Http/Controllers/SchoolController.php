@@ -7,79 +7,67 @@ use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+	protected $school;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+	/**
+	 * SchoolController constructor.
+	 * @param School $school
+	 */
+	public function __construct(School $school)
+	{
+		$this->school = $school;
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Displays a listing of schools for the authenticated user
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function index()
+	{
+		$schools = auth()->user()->schools()->get();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function show(School $school)
-    {
-        //
-    }
+		return view('schools.index')->with('schools', $schools);
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(School $school)
-    {
-        //
-    }
+	public function create()
+	{
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, School $school)
-    {
-        //
-    }
+	public function store(Request $request)
+	{
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\School  $school
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(School $school)
-    {
-        //
-    }
+	/**
+	 * Displays the specified school if user is authenticated
+	 *
+	 * @param School $school
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 */
+	public function show(School $school)
+	{
+		if (auth()->user()->cannot('view', $school)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to this school');
+		}
+		$school = $this->school->find($school->id);
+
+		return view('schools.show')->with('school', $school);
+	}
+
+	public function edit(School $school)
+	{
+		//
+	}
+
+	public function update(Request $request, School $school)
+	{
+		//
+	}
+
+	public function destroy(School $school)
+	{
+		//
+	}
 }
