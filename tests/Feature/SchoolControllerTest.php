@@ -152,7 +152,7 @@ class SchoolControllerTest extends TestCase
 	{
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
-		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 
 		$response = $this->actingAs($user)->put(url('/schools/1'), [
 			'name' => 'An Updated School Name'
@@ -161,5 +161,27 @@ class SchoolControllerTest extends TestCase
 		$this->assertDatabaseHas('schools', ['name' => 'An Updated School Name']);
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.success', 'School updated!');
+	}
+
+	/*
+	 * Test non admins cannot update schools
+	 */
+	public function test_non_admin_users_cannot_update_schools()
+	{
+		$readonly = factory(Role::class)->create(['name' => 'Read Only']);
+		$contributor = factory(Role::class)->create(['name' => 'Contributor']);
+
+		$userA = factory(User::class)->create(['role_id' => $readonly->id]);
+		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
+
+		factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+
+		$response = $this->actingAs($userA)->put(url('/schools/1'), [
+			'name' => 'An Updated School Name'
+		]);
+
+		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
 	}
 }
