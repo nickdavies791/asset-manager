@@ -34,4 +34,18 @@ class AuthenticationTest extends TestCase
 
 		$response->assertViewIs('home');
 	}
+
+	/*
+	 * Test a logged in user can log out
+	 */
+	public function test_a_user_can_log_out()
+	{
+		$role = factory(Role::class)->create();
+		$user = factory(User::class)->create([
+			'role_id' => $role->id
+		]);
+		$response = $this->actingAs($user)->post('/logout');
+		$response->assertStatus(302);
+		$response->assertRedirect('/');
+	}
 }
