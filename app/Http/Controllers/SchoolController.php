@@ -35,9 +35,23 @@ class SchoolController extends Controller
 		//
 	}
 
+	/**
+	 * Stores a newly created school in storage
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
 	public function store(Request $request)
 	{
-		//
+		if (auth()->user()->cannot('create', $this->school)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to create schools');
+		}
+		$school = $this->school->create([
+			'name' => $request->name
+		]);
+		auth()->user()->schools()->attach($school);
+
+		return redirect()->route('schools.show', ['id' => $school->id])->with('alert.success', 'School created!');
 	}
 
 	/**

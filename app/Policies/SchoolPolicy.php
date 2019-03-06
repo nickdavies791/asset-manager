@@ -11,10 +11,18 @@ class SchoolPolicy
 	use HandlesAuthorization;
 
 	/*
-	 * Determine whether the user can view the school
+	 * Determine whether the User can view the School
 	 */
 	public function view(User $user, School $school)
 	{
 		return $user->schools->contains($school->id);
+	}
+
+	/*
+	 * Determine whether the User can create a School
+	 */
+	public function create(User $user)
+	{
+		return $user->isAdministrator();
 	}
 }

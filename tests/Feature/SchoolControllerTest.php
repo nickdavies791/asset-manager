@@ -107,4 +107,21 @@ class SchoolControllerTest extends TestCase
 		$response = $this->actingAs($userB)->get(route('schools.show', ['id' => 1]));
 		$response->assertSessionHas('alert.danger', 'You do not have access to this school');
 	}
+
+	/*
+	 * Test a user with the role 'Administrator' can create new schools
+	 */
+	public function test_an_admin_user_can_create_new_schools()
+	{
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+
+		$response = $this->actingAs($user)->post(route('schools.store', [
+			'name' => 'A New School'
+		]));
+
+		$this->assertDatabaseHas('schools', ['name' => 'A New School']);
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.success', 'School created!');
+	}
 }

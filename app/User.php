@@ -52,4 +52,14 @@ class User extends Authenticatable
 	{
 		return $this->belongsToMany(School::class);
 	}
+
+	/**
+	 * Returns whether the user has the 'Administrator' role
+	 *
+	 * @return bool
+	 */
+	public function isAdministrator()
+	{
+		return $this->role()->where('name', 'Administrator')->exists();
+	}
 }
