@@ -25,4 +25,12 @@ class SchoolPolicy
 	{
 		return $user->isAdministrator();
 	}
+
+	/*
+	 * Determine whether the User can update a School
+	 */
+	public function update(User $user)
+	{
+		return $user->isAdministrator();
+	}
 }

@@ -139,9 +139,27 @@ class SchoolControllerTest extends TestCase
 		$response = $this->actingAs($userA)->post(route('schools.store', ['name' => 'A New School']));
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
-		
+
 		$response = $this->actingAs($userB)->post(route('schools.store', ['name' => 'A New School']));
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+	}
+
+	/*
+	 * Tests an administrator can update existing schools
+	 */
+	public function test_an_admin_user_can_update_schools()
+	{
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+
+		$response = $this->actingAs($user)->put(url('/schools/1'), [
+			'name' => 'An Updated School Name'
+		]);
+
+		$this->assertDatabaseHas('schools', ['name' => 'An Updated School Name']);
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.success', 'School updated!');
 	}
 }
