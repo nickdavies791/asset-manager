@@ -181,7 +181,24 @@ class SchoolControllerTest extends TestCase
 		]);
 
 		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
+		$this->assertDatabaseMissing('schools', ['name' => 'An Updated School Name']);
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
+	}
+
+	/*
+	 * Tests an administrator can delete schools
+	 */
+	public function test_an_admin_user_can_delete_schools()
+	{
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+		factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+
+		$response = $this->actingAs($user)->delete(url('/schools/1'));
+
+		$this->assertDatabaseMissing('schools', ['id' => 1, 'name' => 'Test School']);
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.success', 'School deleted!');
 	}
 }

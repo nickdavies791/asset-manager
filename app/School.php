@@ -12,7 +12,7 @@ class School extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'id', 'name'
+		'name'
 	];
 
 	/**

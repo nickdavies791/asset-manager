@@ -93,8 +93,20 @@ class SchoolController extends Controller
 		return redirect()->route('schools.show', ['id' => $school->id])->with('alert.success', 'School updated!');
 	}
 
+	/**
+	 * Removes the specified school from storage
+	 *
+	 * @param School $school
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws \Exception
+	 */
 	public function destroy(School $school)
 	{
-		//
+		if (auth()->user()->cannot('delete', $school)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to update schools');
+		}
+		$this->school->destroy($school->id);
+
+		return redirect()->route('schools.index')->with('alert.success', 'School deleted!');
 	}
 }

@@ -33,4 +33,12 @@ class SchoolPolicy
 	{
 		return $user->isAdministrator();
 	}
+
+	/*
+	 * Determine whether the User can delete a School
+	 */
+	public function delete(User $user)
+	{
+		return $user->isAdministrator();
+	}
 }
