@@ -55,6 +55,9 @@ class SchoolControllerTest extends TestCase
 		$response->assertRedirect(route('login'));
 	}
 
+	/*
+	 * Test a guest cannot update any existing schools
+	 */
 	public function test_a_guest_cannot_update_schools()
 	{
 		$school = factory(School::class)->create(['name' => 'My Guest School']);
@@ -64,6 +67,18 @@ class SchoolControllerTest extends TestCase
 		]);
 		$response->assertRedirect(route('login'));
 		$this->assertDatabaseMissing('schools', ['name' => 'My Updated Guest School']);
+	}
+
+	/*
+	 * Test a guest cannot delete schools from storage
+	 */
+	public function test_a_guest_cannot_delete_schools()
+	{
+		$school = factory(School::class)->create(['name' => 'My Guest School']);
+
+		$response = $this->delete(route('schools.destroy', ['id' => $school->id]));
+		$response->assertRedirect(route('login'));
+		$this->assertDatabaseHas('schools', ['name' => 'My Guest School']);
 	}
 
 	/*
