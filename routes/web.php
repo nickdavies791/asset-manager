@@ -21,4 +21,5 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::resource('schools', 'SchoolController');
 	Route::resource('assets', 'AssetController')->except('index');
+	Route::get('schools/{school}/assets', 'SchoolAssetController@show')->name('schools.assets');
 });

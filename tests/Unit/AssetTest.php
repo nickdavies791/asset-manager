@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Asset;
+use App\School;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +17,9 @@ class AssetTest extends TestCase
 	 */
 	public function test_an_asset_can_be_stored()
 	{
+		$school = factory(School::class)->create();
 		$asset = factory(Asset::class)->create([
+			'school_id' => $school->id,
 			'tag' => '13579',
 			'name' => 'Test Asset',
 		]);
@@ -32,7 +35,9 @@ class AssetTest extends TestCase
 	 */
 	public function test_an_asset_can_be_updated()
 	{
+		$school = factory(School::class)->create();
 		$asset = factory(Asset::class)->create([
+			'school_id' => $school->id,
 			'tag' => '13579',
 			'name' => 'Test Asset'
 		]);
@@ -54,7 +59,9 @@ class AssetTest extends TestCase
 	 */
 	public function test_an_asset_can_be_destroyed()
 	{
+		$school = factory(School::class)->create();
 		$asset = factory(Asset::class)->create([
+			'school_id' => $school->id,
 			'tag' => '98765',
 			'name' => 'Test Asset Deleted'
 		]);

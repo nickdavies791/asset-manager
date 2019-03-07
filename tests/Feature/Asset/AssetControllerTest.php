@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Asset;
+use App\School;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +12,28 @@ class AssetControllerTest extends TestCase
 {
 	use RefreshDatabase;
 	use WithFaker;
+
+	/*
+	 * Test a guest user cannot view the schools assets view
+	 */
+	public function test_a_guest_cannot_view_all_schools_assets()
+	{
+		$school = factory(School::class)->create();
+		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
+		$response = $this->get(route('schools.assets', ['id' => $asset->id]));
+		$response->assertRedirect(route('login'));
+	}
+
+	/*
+	 * Test a guest user cannot view an asset
+	 */
+	public function test_a_guest_cannot_view_assets()
+	{
+		$school = factory(School::class)->create();
+		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
+		$response = $this->get(route('assets.show', ['id' => $asset->id]));
+		$response->assertRedirect(route('login'));
+	}
 
 	/*
 	 * Test a guest cannot access the form to create assets
@@ -38,7 +61,8 @@ class AssetControllerTest extends TestCase
 	 */
 	public function test_a_guest_cannot_access_edit_form_to_update_assets()
 	{
-		$asset = factory(Asset::class)->create();
+		$school = factory(School::class)->create();
+		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
 		$response = $this->get(route('assets.edit', ['id' => $asset->id]));
 		$response->assertRedirect(route('login'));
 	}
@@ -48,7 +72,9 @@ class AssetControllerTest extends TestCase
 	 */
 	public function test_a_guest_cannot_update_assets()
 	{
+		$school = factory(School::class)->create();
 		$asset = factory(Asset::class)->create([
+			'school_id' => $school->id,
 			'name' => 'My Test Asset',
 			'tag' => $this->faker->randomNumber()
 		]);
@@ -64,7 +90,9 @@ class AssetControllerTest extends TestCase
 	 */
 	public function test_a_guest_cannot_delete_assets()
 	{
+		$school = factory(School::class)->create();
 		$asset = factory(Asset::class)->create([
+			'school_id' => $school->id,
 			'name' => 'My Test Asset',
 			'tag' => $this->faker->randomNumber()
 		]);

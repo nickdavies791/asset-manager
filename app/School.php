@@ -28,4 +28,12 @@ class School extends Model
 	{
 		return $this->belongsToMany(User::class);
 	}
+
+	/**
+	 * Returns the assets associated with a school
+	 */
+	public function assets()
+	{
+		return $this->hasMany(Asset::class);
+	}
 }

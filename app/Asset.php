@@ -20,4 +20,12 @@ class Asset extends Model
 	 * @var boolean
 	 */
 	public $timestamps = false;
+
+	/**
+	 * Returns the school associated with an asset
+	 */
+	public function school()
+	{
+		return $this->belongsTo(School::class);
+	}
 }
