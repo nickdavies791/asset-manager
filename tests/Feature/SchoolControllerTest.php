@@ -41,6 +41,7 @@ class SchoolControllerTest extends TestCase
 			'name' => 'Test Guest School'
 		]);
 		$response->assertRedirect(route('login'));
+		$this->assertDatabaseMissing('schools', ['name' => 'Test Guest School']);
 	}
 
 	/*
@@ -52,6 +53,17 @@ class SchoolControllerTest extends TestCase
 
 		$response = $this->get(route('schools.edit', ['id' => $school->id]));
 		$response->assertRedirect(route('login'));
+	}
+
+	public function test_a_guest_cannot_update_schools()
+	{
+		$school = factory(School::class)->create(['name' => 'My Guest School']);
+
+		$response = $this->put(route('schools.update', ['id' => $school->id]), [
+			'name' => 'My Updated Guest School'
+		]);
+		$response->assertRedirect(route('login'));
+		$this->assertDatabaseMissing('schools', ['name' => 'My Updated Guest School']);
 	}
 
 	/*
