@@ -8,8 +8,10 @@
                 <div class="card-header">Update School</div>
 
                 <div class="card-body">
-                    <form>
-                        <input type="text" name="school" placeholder="Enter school name" value="{{ $school->name }}">
+                    <form method="POST" action="{{ route('schools.update', ['id' => $school->id]) }}">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" name="name" placeholder="Enter school name" value="{{ $school->name }}">
                         <button type="submit">Save School</button>
                     </form>
                 </div>

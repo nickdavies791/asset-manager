@@ -8,8 +8,9 @@
                 <div class="card-header">Create School</div>
 
                 <div class="card-body">
-                    <form>
-                        <input type="text" name="school" placeholder="Enter school name">
+                    <form method="POST" action="{{ route('schools.store') }}">
+                        @csrf
+                        <input type="text" name="name" placeholder="Enter school name">
                         <button type="submit">Save School</button>
                     </form>
                 </div>
