@@ -30,9 +30,18 @@ class SchoolController extends Controller
 		return view('schools.index')->with('schools', $schools);
 	}
 
+	/**
+	 * Returns the form to create new schools
+	 *
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 */
 	public function create()
 	{
-		//
+		if (auth()->user()->cannot('create', $this->school)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to create schools');
+		}
+
+		return view('schools.create');
 	}
 
 	/**

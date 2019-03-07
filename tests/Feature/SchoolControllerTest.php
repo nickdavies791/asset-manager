@@ -109,6 +109,39 @@ class SchoolControllerTest extends TestCase
 	}
 
 	/*
+	 * Test an admin user can access view to create new schools
+	 */
+	public function test_an_admin_user_can_access_create_form_to_create_new_schools()
+	{
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+
+		$response = $this->actingAs($user)->get(route('schools.create'));
+
+		$response->assertStatus(200);
+		$response->assertViewIs('schools.create');
+	}
+
+	/*
+	 * Test users without admin role cannot access the form to create new schools
+	 */
+	public function test_non_admin_users_cannot_access_create_form_to_create_new_schools()
+	{
+		$readonly = factory(Role::class)->create(['name' => 'Read Only']);
+		$contributor = factory(Role::class)->create(['name' => 'Contributor']);
+		$userA = factory(User::class)->create(['role_id' => $readonly->id]);
+		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
+
+		$response = $this->actingAs($userA)->get(route('schools.create'));
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+
+		$response = $this->actingAs($userB)->get(route('schools.create'));
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+	}
+
+	/*
 	 * Test a user with the role 'Administrator' can create new schools
 	 */
 	public function test_an_admin_user_can_create_new_schools()
