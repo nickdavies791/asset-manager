@@ -24,6 +24,15 @@ class SchoolControllerTest extends TestCase
 	}
 
 	/*
+	 * Test a guest cannot access the create form to create new schools
+	 */
+	public function test_a_guest_cannot_access_create_form_to_create_new_schools()
+	{
+		$response = $this->get(route('schools.create'));
+		$response->assertRedirect(route('login'));
+	}
+
+	/*
 	* Test a user can see the schools they are associated with
 	*/
 	public function test_a_user_can_see_all_schools_they_are_associated_with()
