@@ -17,6 +17,15 @@ class CreateAssetsTable extends Migration
             $table->bigIncrements('id');
             $table->string('tag');
             $table->string('name');
+            $table->string('serial_number')->nullable();
+            $table->string('make')->nullable();
+            $table->string('model')->nullable();
+            $table->string('processor')->nullable();
+            $table->string('memory')->nullable();
+            $table->string('storage')->nullable();
+            $table->string('operating_system')->nullable();
+            $table->text('warranty')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
