@@ -218,9 +218,9 @@ class SchoolControllerTest extends TestCase
 	{
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
-		factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 
-		$response = $this->actingAs($user)->put(url('/schools/1'), [
+		$response = $this->actingAs($user)->put(route('schools.update', ['school' => $school->id]), [
 			'name' => 'An Updated School Name'
 		]);
 
@@ -240,9 +240,9 @@ class SchoolControllerTest extends TestCase
 		$userA = factory(User::class)->create(['role_id' => $readonly->id]);
 		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
 
-		factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 
-		$response = $this->actingAs($userA)->put(url('/schools/1'), [
+		$response = $this->actingAs($userA)->put(route('schools.update', ['school' => $school->id]), [
 			'name' => 'An Updated School Name'
 		]);
 
@@ -259,9 +259,9 @@ class SchoolControllerTest extends TestCase
 	{
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
-		factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 
-		$response = $this->actingAs($user)->delete(url('/schools/1'));
+		$response = $this->actingAs($user)->delete(route('schools.destroy', ['id' => $school->id]));
 
 		$this->assertDatabaseMissing('schools', ['id' => 1, 'name' => 'Test School']);
 		$response->assertStatus(302);
