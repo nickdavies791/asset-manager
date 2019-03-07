@@ -44,6 +44,17 @@ class SchoolControllerTest extends TestCase
 	}
 
 	/*
+	 * Test guests cannot access the edit form and update schools
+	 */
+	public function test_a_guest_cannot_access_edit_form_to_update_schools()
+	{
+		$school = factory(School::class)->create(['name' => 'My Guest School']);
+
+		$response = $this->get(route('schools.edit', ['id' => $school->id]));
+		$response->assertRedirect(route('login'));
+	}
+
+	/*
 	* Test a user can see the schools they are associated with
 	*/
 	public function test_a_user_can_see_all_schools_they_are_associated_with()
