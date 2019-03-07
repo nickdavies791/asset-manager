@@ -30,6 +30,9 @@ class SchoolAssetController extends Controller
 	 */
 	public function show(School $school)
 	{
+		if (auth()->user()->cannot('view', $school)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to view this school\'s assets');
+		}
 		$school = $this->school->findOrFail($school->id);
 		$assets = $school->assets;
 
