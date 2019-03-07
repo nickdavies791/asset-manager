@@ -228,12 +228,10 @@ class SchoolControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
 
 		$response = $this->actingAs($userA)->post(route('schools.store', ['name' => 'A New School']));
-		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+		$response->assertStatus(403);
 
 		$response = $this->actingAs($userB)->post(route('schools.store', ['name' => 'A New School']));
-		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+		$response->assertStatus(403);
 	}
 
 	/*
@@ -252,6 +250,9 @@ class SchoolControllerTest extends TestCase
 		$response->assertSee('My Test School');
 	}
 
+	/*
+	 * Test non admins cannot see the edit form to update schools
+	 */
 	public function test_non_admin_users_cannot_access_edit_form_to_update_schools()
 	{
 		$readonly = factory(Role::class)->create(['name' => 'Read Only']);

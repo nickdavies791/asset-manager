@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSchool;
 use App\School;
 use Illuminate\Http\Request;
 
@@ -47,10 +48,10 @@ class SchoolController extends Controller
 	/**
 	 * Stores a newly created school in storage
 	 *
-	 * @param Request $request
+	 * @param StoreSchool $request
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
-	public function store(Request $request)
+	public function store(StoreSchool $request)
 	{
 		if (auth()->user()->cannot('create', $this->school)) {
 			return redirect('home')->with('alert.danger', 'You do not have access to create schools');
