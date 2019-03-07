@@ -303,7 +303,14 @@ class SchoolControllerTest extends TestCase
 		$response = $this->actingAs($userA)->put(route('schools.update', ['school' => $school->id]), [
 			'name' => 'An Updated School Name'
 		]);
+		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
+		$this->assertDatabaseMissing('schools', ['name' => 'An Updated School Name']);
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
 
+		$response = $this->actingAs($userB)->put(route('schools.update', ['school' => $school->id]), [
+			'name' => 'An Updated School Name'
+		]);
 		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
 		$this->assertDatabaseMissing('schools', ['name' => 'An Updated School Name']);
 		$response->assertStatus(302);
