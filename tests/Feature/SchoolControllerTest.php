@@ -179,6 +179,39 @@ class SchoolControllerTest extends TestCase
 	}
 
 	/*
+	 * Test an admin user can view the edit form to update existing schools
+	 */
+	public function test_an_admin_user_can_access_edit_form_to_update_schools()
+	{
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+		$school = factory(School::class)->create(['name' => 'My Test School']);
+
+		$response = $this->actingAs($user)->get(route('schools.edit', ['school' => $school->id]));
+
+		$response->assertStatus(200);
+		$response->assertViewIs('schools.edit');
+		$response->assertSee('My Test School');
+	}
+
+	public function test_non_admin_users_cannot_access_edit_form_to_update_schools()
+	{
+		$readonly = factory(Role::class)->create(['name' => 'Read Only']);
+		$contributor = factory(Role::class)->create(['name' => 'Contributor']);
+		$userA = factory(User::class)->create(['role_id' => $readonly->id]);
+		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
+		$school = factory(School::class)->create(['name' => 'My Test School']);
+
+		$response = $this->actingAs($userA)->get(route('schools.edit', ['id' => $school->id]));
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
+
+		$response = $this->actingAs($userB)->get(route('schools.edit', ['id' => $school->id]));
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
+	}
+
+	/*
 	 * Tests an administrator can update existing schools
 	 */
 	public function test_an_admin_user_can_update_schools()

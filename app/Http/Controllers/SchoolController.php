@@ -79,9 +79,20 @@ class SchoolController extends Controller
 		return view('schools.show')->with('school', $school);
 	}
 
+	/**
+	 * Returns the form to update specified school
+	 *
+	 * @param School $school
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 */
 	public function edit(School $school)
 	{
-		//
+		if (auth()->user()->cannot('update', $school)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to update schools');
+		}
+		$school = $this->school->find($school->id);
+
+		return view('schools.edit')->with('school', $school);
 	}
 
 	/**
