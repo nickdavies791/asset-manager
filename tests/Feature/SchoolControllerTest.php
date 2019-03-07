@@ -325,4 +325,28 @@ class SchoolControllerTest extends TestCase
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.success', 'School deleted!');
 	}
+
+	/*
+	 * Test non admin users cannot delete schools from storage
+	 */
+	public function test_non_admin_users_cannot_delete_schools()
+	{
+		$readonly = factory(Role::class)->create(['name' => 'Read Only']);
+		$contributor = factory(Role::class)->create(['name' => 'Contributor']);
+
+		$userA = factory(User::class)->create(['role_id' => $readonly->id]);
+		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
+
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+
+		$response = $this->actingAs($userA)->delete(route('schools.destroy', ['school' => $school->id]));
+		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.danger', 'You do not have access to delete schools');
+
+		$response = $this->actingAs($userB)->delete(route('schools.destroy', ['school' => $school->id]));
+		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
+		$response->assertStatus(302);
+		$response->assertSessionHas('alert.danger', 'You do not have access to delete schools');
+	}
 }

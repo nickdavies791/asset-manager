@@ -123,7 +123,7 @@ class SchoolController extends Controller
 	public function destroy(School $school)
 	{
 		if (auth()->user()->cannot('delete', $school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to update schools');
+			return redirect('home')->with('alert.danger', 'You do not have access to delete schools');
 		}
 		$this->school->destroy($school->id);
 
