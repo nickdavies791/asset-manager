@@ -33,6 +33,17 @@ class SchoolControllerTest extends TestCase
 	}
 
 	/*
+	 * Test a guest cannot post data to create new schools
+	 */
+	public function test_a_guest_cannot_create_new_schools()
+	{
+		$response = $this->post(route('schools.store'), [
+			'name' => 'Test Guest School'
+		]);
+		$response->assertRedirect(route('login'));
+	}
+
+	/*
 	* Test a user can see the schools they are associated with
 	*/
 	public function test_a_user_can_see_all_schools_they_are_associated_with()
