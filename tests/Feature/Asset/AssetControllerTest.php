@@ -148,4 +148,60 @@ class AssetControllerTest extends TestCase
 		$response->assertRedirect('home');
 		$response->assertSessionHas('alert.danger', 'You do not have access to this asset');
 	}
+
+	/*
+	 * Test admins or contributors can access the form to create new assets
+	 */
+	public function test_a_user_can_access_create_form_if_has_contributor_or_admin_roles()
+	{
+		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
+		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
+		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
+		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
+
+		$response = $this->actingAs($userA)->get(route('assets.create'));
+		$response->assertStatus(200);
+		$response->assertViewIs('assets.create');
+
+		$response = $this->actingAs($userB)->get(route('assets.create'));
+		$response->assertStatus(200);
+		$response->assertViewIs('assets.create');
+	}
+
+	/*
+	 * Test users with read only role cannot access create new assets form
+	 */
+	public function test_a_user_cannot_access_create_form_if_has_read_only_role()
+	{
+		$role = factory(Role::class)->create(['name' => 'Read Only']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+
+		$response = $this->actingAs($user)->get(route('assets.create'));
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.danger', 'You do not have access to create assets');
+	}
+
+	/*
+	 * Test a user can create assets if they are a contributor or admin
+	 */
+	public function test_a_user_can_create_assets_if_has_contributor_or_admin_roles()
+	{
+		$this->withoutExceptionHandling();
+
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
+		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
+		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
+		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
+
+		$userA->schools()->attach($school->id);
+
+		$response = $this->actingAs($userA)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Test Asset', 'tag' => '13579']);
+		$this->assertDatabaseHas('assets', ['name' => 'My Test Asset', 'tag' => '13579']);
+		$response->assertSessionHas('alert.success', 'Asset created!');
+
+		$response = $this->actingAs($userB)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Second Test Asset', 'tag' => '97531']);
+		$this->assertDatabaseHas('assets', ['name' => 'My Second Test Asset', 'tag' => '97531']);
+		$response->assertSessionHas('alert.success', 'Asset created!');
+	}
 }

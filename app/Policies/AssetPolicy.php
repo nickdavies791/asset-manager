@@ -34,7 +34,7 @@ class AssetPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isAdministrator() || $user->isContributor();
     }
 
     /**

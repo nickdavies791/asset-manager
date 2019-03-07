@@ -18,14 +18,32 @@ class AssetController extends Controller
 		$this->asset = $asset;
 	}
 
+	/**
+	 * Returns the form to create new assets
+	 *
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 */
 	public function create()
     {
-        //
+		if (auth()->user()->cannot('create', $this->asset)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to create assets');
+		}
+
+		return view('assets.create');
     }
 
     public function store(Request $request)
     {
-        //
+		if (auth()->user()->cannot('create', $this->asset)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to create assets');
+		}
+		$asset = $this->asset->create([
+			'school_id' => $request->school,
+			'name' => $request->name,
+			'tag' => $request->tag
+		]);
+
+		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset created!');
     }
 
 	/**
