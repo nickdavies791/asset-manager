@@ -125,4 +125,27 @@ class AssetControllerTest extends TestCase
 		$response->assertRedirect('home');
 		$response->assertSessionHas('alert.danger', 'You do not have access to view this school\'s assets');
 	}
+
+	/*
+	 * Test a user can only access an asset if they have access to that school
+	 */
+	public function test_a_user_can_only_view_assets_if_associated_with_that_school()
+	{
+		$schoolA = factory(School::class)->create(['id' => '1', 'name' => 'Test School A']);
+		$schoolB = factory(School::class)->create(['id' => '2', 'name' => 'Test School B']);
+		$assetA = factory(Asset::class)->create(['school_id' => $schoolA->id, 'name' => 'Test Asset School A']);
+		$assetB = factory(Asset::class)->create(['school_id' => $schoolB->id, 'name' => 'Test Asset School B']);
+
+		$role = factory(Role::class)->create(['name' => 'Read Only']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+
+		$user->schools()->attach($schoolA->id);
+
+		$response = $this->actingAs($user)->get(route('assets.show', ['id' => $assetA->id]));
+		$response->assertViewIs('assets.show');
+		$response->assertSee('Test Asset School A');
+		$response = $this->actingAs($user)->get(route('assets.show', ['id' => $assetB->id]));
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.danger', 'You do not have access to this asset');
+	}
 }
