@@ -114,8 +114,19 @@ class AssetController extends Controller
 		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset updated!');
 	}
 
+	/**
+	 * Removes the specified asset from storage
+	 *
+	 * @param Asset $asset
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
 	public function destroy(Asset $asset)
 	{
-		//
+		if (auth()->user()->cannot('delete', $asset)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to delete assets');
+		}
+		$this->asset->destroy($asset->id);
+
+		return redirect()->route('home')->with('alert.success', 'Asset deleted!');
 	}
 }

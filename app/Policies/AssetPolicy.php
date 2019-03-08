@@ -62,7 +62,7 @@ class AssetPolicy
      */
     public function delete(User $user, Asset $asset)
     {
-        //
+        return $user->isAdministrator();
     }
 
     /**

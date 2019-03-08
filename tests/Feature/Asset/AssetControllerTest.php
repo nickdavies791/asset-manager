@@ -318,4 +318,45 @@ class AssetControllerTest extends TestCase
 		$response->assertRedirect('home');
 		$response->assertSessionHas('alert.danger', 'You do not have access to update assets');
 	}
+
+	public function test_a_user_can_delete_assets_if_admin()
+	{
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'name' => 'My First Asset']);
+
+		$user->schools()->attach($school->id);
+
+		$response = $this->actingAs($user)->delete(route('assets.update', ['id' => $asset->id]));
+		$this->assertDatabaseMissing('assets', ['id' => $asset->id, 'name' => 'My First Asset']);
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.success', 'Asset deleted!');
+	}
+
+	/*
+	 * Test a user cannot delete an asset if they are not an administrator
+	 */
+	public function test_a_user_cannot_delete_assets_if_not_admin()
+	{
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
+		$roleB = factory(Role::class)->create(['name' => 'Read Only']);
+		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
+		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
+		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'name' => 'My First Asset']);
+
+		$userA->schools()->attach($school->id);
+		$userB->schools()->attach($school->id);
+
+		$response = $this->actingAs($userA)->delete(route('assets.update', ['id' => $asset->id]));
+		$this->assertDatabaseHas('assets', ['id' => $asset->id, 'name' => 'My First Asset']);
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.danger', 'You do not have access to delete assets');
+
+		$response = $this->actingAs($userB)->delete(route('assets.update', ['id' => $asset->id]));
+		$this->assertDatabaseHas('assets', ['id' => $asset->id, 'name' => 'My First Asset']);
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.danger', 'You do not have access to delete assets');
+	}
 }
