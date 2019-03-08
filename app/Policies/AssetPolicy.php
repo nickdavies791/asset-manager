@@ -46,7 +46,11 @@ class AssetPolicy
      */
     public function update(User $user, Asset $asset)
     {
-        //
+        $school = $asset->school;
+
+        if ($user->can('view', $school) && ($user->isAdministrator() || $user->isContributor())) {
+        	return $school->assets->contains($asset->id);
+		}
     }
 
     /**

@@ -219,4 +219,103 @@ class AssetControllerTest extends TestCase
 		$response->assertRedirect('home');
 		$response->assertSessionHas('alert.danger', 'You do not have access to create assets');
 	}
+
+	/*
+	 * Test a user with contributor or admin roles can see the assets edit form
+	 */
+	public function test_a_user_can_access_edit_form_if_contributor_or_admin()
+	{
+		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
+		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
+		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
+		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
+
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
+
+		$userA->schools()->attach($school->id);
+		$userB->schools()->attach($school->id);
+
+		$response = $this->actingAs($userA)->get(route('assets.edit', ['id' => $asset->id]));
+		$response->assertStatus(200);
+		$response->assertViewIs('assets.edit', ['id' => $asset->id]);
+
+		$response = $this->actingAs($userB)->get(route('assets.edit', ['id' => $asset->id]));
+		$response->assertStatus(200);
+		$response->assertViewIs('assets.edit', ['id' => $asset->id]);
+	}
+
+	/*
+	 * Test a read only user cannot access the edit form
+	 */
+	public function test_a_user_cannot_access_edit_form_if_read_only()
+	{
+		$role = factory(Role::class)->create(['name' => 'Read Only']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
+
+		$user->schools()->attach($school->id);
+
+		$response = $this->actingAs($user)->get(route('assets.edit', ['id' => $asset->id]));
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.danger', 'You do not have access to update this asset');
+	}
+
+	/*
+	 * Test a user can update assets if authorised as contributor or admin
+	 */
+	public function test_a_user_can_update_assets_if_contributor_or_admin()
+	{
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
+		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
+		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
+		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
+
+		$assetA = factory(Asset::class)->create(['school_id' => $school->id, 'name' => 'My First Asset']);
+		$assetB = factory(Asset::class)->create(['school_id' => $school->id, 'name' => 'My Second Asset']);
+
+		$userA->schools()->attach($school->id);
+		$userB->schools()->attach($school->id);
+
+		$response = $this->actingAs($userA)->put(route('assets.update', ['id' => $assetA->id]), [
+			'school' => $school->id,
+			'name' => 'My First Updated Asset',
+			'tag' => '13579'
+		]);
+		$this->assertDatabaseHas('assets', ['id' => $assetA->id, 'name' => 'My First Updated Asset', 'tag' => '13579']);
+		$response->assertSessionHas('alert.success', 'Asset updated!');
+
+		$response = $this->actingAs($userB)->put(route('assets.update', ['id' => $assetB->id]), [
+			'school' => $school->id,
+			'name' => 'My Second Updated Asset',
+			'tag' => '12345'
+		]);
+		$this->assertDatabaseHas('assets', ['id' => $assetB->id, 'name' => 'My Second Updated Asset', 'tag' => '12345']);
+		$response->assertSessionHas('alert.success', 'Asset updated!');
+	}
+
+	/*
+	 * Test users with read only role cannot update assets
+	 */
+	public function test_a_user_cannot_update_assets_if_read_only()
+	{
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$role = factory(Role::class)->create(['name' => 'Read Only']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'name' => 'My First Asset']);
+
+		$user->schools()->attach($school->id);
+
+		$response = $this->actingAs($user)->put(route('assets.update', ['id' => $asset->id]), [
+			'school' => $school->id,
+			'name' => 'My First Updated Asset',
+			'tag' => '13579'
+		]);
+		$this->assertDatabaseMissing('assets', ['id' => $asset->id, 'name' => 'My First Updated Asset', 'tag' => '13579']);
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.danger', 'You do not have access to update assets');
+	}
 }
