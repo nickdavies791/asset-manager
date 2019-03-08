@@ -186,8 +186,6 @@ class AssetControllerTest extends TestCase
 	 */
 	public function test_a_user_can_create_assets_if_has_contributor_or_admin_roles()
 	{
-		$this->withoutExceptionHandling();
-
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
 		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
@@ -203,5 +201,22 @@ class AssetControllerTest extends TestCase
 		$response = $this->actingAs($userB)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Second Test Asset', 'tag' => '97531']);
 		$this->assertDatabaseHas('assets', ['name' => 'My Second Test Asset', 'tag' => '97531']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
+	}
+
+	/*
+	 * Test users with read only role cannot create assets
+	 */
+	public function test_a_user_cannot_create_assets_if_has_read_only_role()
+	{
+		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$role = factory(Role::class)->create(['name' => 'Read Only']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+
+		$user->schools()->attach($school->id);
+
+		$response = $this->actingAs($user)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Test Asset', 'tag' => '13579']);
+		$this->assertDatabaseMissing('assets', ['name' => 'My Test Asset', 'tag' => '13579']);
+		$response->assertRedirect('home');
+		$response->assertSessionHas('alert.danger', 'You do not have access to create assets');
 	}
 }
