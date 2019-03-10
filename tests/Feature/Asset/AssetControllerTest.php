@@ -216,8 +216,7 @@ class AssetControllerTest extends TestCase
 
 		$response = $this->actingAs($user)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Test Asset', 'tag' => '13579']);
 		$this->assertDatabaseMissing('assets', ['name' => 'My Test Asset', 'tag' => '13579']);
-		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to create assets');
+		$response->assertStatus(403);
 	}
 
 	/*

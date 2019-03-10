@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Asset;
+use App\Http\Requests\StoreAsset;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
@@ -35,10 +36,10 @@ class AssetController extends Controller
 	/**
 	 * Stores a new asset
 	 *
-	 * @param Request $request
+	 * @param StoreAsset $request
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
-	public function store(Request $request)
+	public function store(StoreAsset $request)
 	{
 		if (auth()->user()->cannot('create', $this->asset)) {
 			return redirect('home')->with('alert.danger', 'You do not have access to create assets');
