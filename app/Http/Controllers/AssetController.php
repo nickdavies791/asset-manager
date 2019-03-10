@@ -47,7 +47,16 @@ class AssetController extends Controller
 		$asset = $this->asset->create([
 			'school_id' => $request->school,
 			'name' => $request->name,
-			'tag' => $request->tag
+			'tag' => $request->tag,
+			'serial_number' => $request->serial_number,
+			'make' => $request->make,
+			'model' => $request->model,
+			'processor' => $request->processor,
+			'memory' => $request->memory,
+			'storage' => $request->storage,
+			'operating_system' => $request->operating_system,
+			'warranty' => $request->warranty,
+			'notes' => $request->notes,
 		]);
 
 		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset created!');

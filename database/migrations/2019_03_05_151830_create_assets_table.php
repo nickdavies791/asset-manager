@@ -16,9 +16,9 @@ class CreateAssetsTable extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('school_id');
-            $table->string('tag');
-            $table->string('name');
-            $table->string('serial_number')->nullable();
+			$table->string('name');
+			$table->string('tag');
+			$table->string('serial_number')->nullable();
             $table->string('make')->nullable();
             $table->string('model')->nullable();
             $table->string('processor')->nullable();
