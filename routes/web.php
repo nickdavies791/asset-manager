@@ -20,6 +20,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::resource('schools', 'SchoolController');
+	Route::resource('categories', 'CategoryController')->except(['index', 'show']);
 	Route::resource('assets', 'AssetController')->except('index');
 	Route::get('schools/{school}/assets', 'SchoolAssetController@show')->name('schools.assets');
 });

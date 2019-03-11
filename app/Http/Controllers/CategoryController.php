@@ -3,83 +3,102 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\StoreCategory;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+	protected $category;
+
+	/**
+	 * CategoryController constructor.
+	 * @param Category $category
+	 */
+	public function __construct(Category $category)
+	{
+		$this->category = $category;
+	}
+
+	/**
+	 * Returns the form to create new categories
+	 *
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	public function create()
     {
-        //
+        if (auth()->user()->cannot('create', $this->category)) {
+        	return redirect('home')->with('alert.danger', 'You do not have access to create categories');
+		}
+
+        return view('categories.create');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+	/**
+	 * Stores a newly created category in storage
+	 *
+	 * @param StoreCategory $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	public function store(StoreCategory $request)
     {
-        //
+		if (auth()->user()->cannot('create', $this->category)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to create categories');
+		}
+
+		$this->category->create([
+			'name' => $request->name
+		]);
+
+		return redirect('home')->with('alert.success', 'Category created!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+	/**
+	 * Returns the form to update specified category
+	 *
+	 * @param Category $category
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	public function edit(Category $category)
     {
-        //
+        if (auth()->user()->cannot('update', $category)) {
+        	return redirect('home')->with('alert.danger', 'You do not have access to update categories');
+		}
+        $category = $this->category->find($category->id);
+
+        return view('categories.edit')->with('category', $category);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
+	/**
+	 * Updates the specified category in storage
+	 *
+	 * @param Request $request
+	 * @param Category $category
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	public function update(Request $request, Category $category)
     {
-        //
+        if (auth()->user()->cannot('update', $category)) {
+        	return redirect('home')->with('alert.danger', 'You do not have access to update categories');
+		}
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect('home')->with('alert.success', 'Category updated!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
+	/**
+	 * Removes the specified category from storage
+	 *
+	 * @param Category $category
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	public function destroy(Category $category)
     {
-        //
-    }
+		if (auth()->user()->cannot('delete', $category)) {
+			return redirect('home')->with('alert.danger', 'You do not have access to delete categories');
+		}
+		$this->category->destroy($category->id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Category $category)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Category $category)
-    {
-        //
+		return redirect('home')->with('alert.success', 'Category deleted!');
     }
 }
