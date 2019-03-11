@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class AssetTest extends TestCase
 {
 	use RefreshDatabase;
+	use WithFaker;
 
 	/*
 	 * Test an asset can be stored
@@ -20,8 +21,17 @@ class AssetTest extends TestCase
 		$school = factory(School::class)->create();
 		$asset = factory(Asset::class)->create([
 			'school_id' => $school->id,
-			'tag' => '13579',
 			'name' => 'Test Asset',
+			'tag' => '13579',
+			'serial_number' => $this->faker->bothify('****************'),
+			'make' => 'Apple',
+			'model' => 'iMac',
+			'processor' => 'Intel Core i7 9700K 3.6 GHz',
+			'memory' => '16GB',
+			'storage' => '512GB SSD',
+			'operating_system' => 'OS X High Sierra',
+			'warranty' => '3 Years',
+			'notes' => 'These are very useful notes for this asset.',
 		]);
 
 		$this->assertDatabaseHas('assets', [
