@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Type extends Model
 {
 	/**
 	 * The attributes that are mass assignable.
@@ -22,18 +22,10 @@ class Category extends Model
 	public $timestamps = false;
 
 	/*
-	 * Returns the assets associated with a category
+	 * Returns the categories associated with a type
 	 */
-	public function assets()
+	public function categories()
 	{
-		return $this->hasMany(Asset::class);
-	}
-
-	/*
-	 * Returns the types associated with a category
-	 */
-	public function types()
-	{
-		return $this->belongsToMany(Type::class);
+		return $this->belongsToMany(Category::class);
 	}
 }
