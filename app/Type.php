@@ -26,6 +26,14 @@ class Type extends Model
 	 */
 	public function categories()
 	{
-		return $this->belongsToMany(Category::class);
+		return $this->hasMany(Category::class);
+	}
+
+	/*
+	 * Returns the assets associated with a type
+	 */
+	public function assets()
+	{
+		return $this->hasMany(Asset::class);
 	}
 }

@@ -12,7 +12,7 @@ class Asset extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'school_id', 'category_id', 'name', 'tag', 'serial_number', 'make', 'model', 'processor', 'memory', 'storage', 'operating_system', 'warranty', 'notes'
+		'school_id', 'category_id', 'type_id', 'name', 'tag', 'serial_number', 'make', 'model', 'processor', 'memory', 'storage', 'operating_system', 'warranty', 'notes'
 	];
 
 	/**
@@ -35,5 +35,13 @@ class Asset extends Model
 	public function category()
 	{
 		return $this->belongsTo(Category::class);
+	}
+
+	/*
+	 * Returns the type associated with an asset
+	 */
+	public function type()
+	{
+		return $this->belongsTo(Type::class);
 	}
 }

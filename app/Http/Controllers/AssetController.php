@@ -47,6 +47,7 @@ class AssetController extends Controller
 		$asset = $this->asset->create([
 			'school_id' => $request->school_id,
 			'category_id' => $request->category_id,
+			'type_id' => $request->type_id,
 			'name' => $request->name,
 			'tag' => $request->tag,
 			'serial_number' => $request->serial_number,
@@ -110,6 +111,7 @@ class AssetController extends Controller
 		$asset->update([
 			'school_id' => $request->school_id,
 			'category_id' => $request->category_id,
+			'type_id' => $request->type_id,
 			'tag' => $request->tag,
 			'name' => $request->name,
 			'serial_number' => $request->serial_number,

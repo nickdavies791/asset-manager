@@ -6,6 +6,7 @@ $factory->define(App\Asset::class, function (Faker $faker) {
     return [
     	'school_id' => \App\School::all()->random()->id,
     	'category_id' => \App\Category::all()->random()->id,
+    	'type_id' => \App\Type::all()->random()->id,
     	'tag' => $faker->ean8,
         'name' => $faker->sentence(2),
         'serial_number' => $faker->sentence(6),
