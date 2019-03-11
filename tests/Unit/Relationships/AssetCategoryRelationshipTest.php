@@ -14,9 +14,9 @@ class AssetCategoryRelationshipTest extends TestCase
 	use RefreshDatabase;
 
     /*
-     * An asset can have a category
+     * An asset can belong to a category
      */
-    public function test_an_asset_can_have_a_category()
+    public function test_an_asset_can_belong_to_a_category()
 	{
 		$category = factory(Category::class)->create();
 		$school = factory(School::class)->create();
@@ -40,7 +40,7 @@ class AssetCategoryRelationshipTest extends TestCase
 	{
 		$category = factory(Category::class)->create();
 		factory(School::class)->create();
-		factory(Asset::class, 10)->create();
+		factory(Asset::class, 10)->create(['category_id' => $category->id]);
 
 		$this->assertTrue($category->assets()->exists());
 	}
