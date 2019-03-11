@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Asset;
+use App\Category;
 use App\Role;
 use App\School;
 use App\User;
@@ -23,6 +24,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -42,6 +44,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -62,6 +65,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create(['id' => 1]);
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -82,6 +86,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -101,6 +106,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 		$user->schools()->attach($school->id);
 
 		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'tag' => '12345']);
@@ -122,6 +128,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -143,6 +150,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -164,6 +172,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -185,6 +194,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -206,6 +216,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -227,6 +238,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -248,6 +260,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -269,6 +282,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 
@@ -290,6 +304,7 @@ class StoreAssetValidationTest extends TestCase
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
 
 		$user->schools()->attach($school->id);
 

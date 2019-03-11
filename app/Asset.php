@@ -12,7 +12,7 @@ class Asset extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'school_id', 'name', 'tag', 'serial_number', 'make', 'model', 'processor', 'memory', 'storage', 'operating_system', 'warranty', 'notes'
+		'school_id', 'category_id', 'name', 'tag', 'serial_number', 'make', 'model', 'processor', 'memory', 'storage', 'operating_system', 'warranty', 'notes'
 	];
 
 	/**
