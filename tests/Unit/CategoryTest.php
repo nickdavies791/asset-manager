@@ -58,7 +58,7 @@ class CategoryTest extends TestCase
 
 		$this->assertDatabaseMissing('categories', [
 			'id' => $category->id,
-			'name' => 'Desktop PCs'
+			'name' => 'Desktop Computers'
 		]);
 	}
 }
