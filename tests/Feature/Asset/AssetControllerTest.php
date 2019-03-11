@@ -6,6 +6,7 @@ use App\Asset;
 use App\Category;
 use App\Role;
 use App\School;
+use App\Type;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -23,6 +24,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
 		$response = $this->get(route('schools.assets', ['id' => $school->id]));
 		$response->assertRedirect(route('login'));
@@ -35,6 +37,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
 		$response = $this->get(route('assets.show', ['id' => $asset->id]));
 		$response->assertRedirect(route('login'));
@@ -68,6 +71,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
 		$response = $this->get(route('assets.edit', ['id' => $asset->id]));
 		$response->assertRedirect(route('login'));
@@ -80,6 +84,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create([
 			'school_id' => $school->id,
 			'name' => 'My Test Asset',
@@ -99,6 +104,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create([
 			'school_id' => $school->id,
 			'name' => 'My Test Asset',
@@ -117,6 +123,7 @@ class AssetControllerTest extends TestCase
 		$schoolA = factory(School::class)->create(['id' => '1', 'name' => 'Test School A']);
 		$schoolB = factory(School::class)->create(['id' => '2', 'name' => 'Test School B']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		factory(Asset::class)->create(['school_id' => $schoolA->id, 'name' => 'Test Asset School A']);
 		factory(Asset::class)->create(['school_id' => $schoolB->id, 'name' => 'Test Asset School B']);
 
@@ -141,6 +148,7 @@ class AssetControllerTest extends TestCase
 		$schoolA = factory(School::class)->create(['id' => '1', 'name' => 'Test School A']);
 		$schoolB = factory(School::class)->create(['id' => '2', 'name' => 'Test School B']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$assetA = factory(Asset::class)->create(['school_id' => $schoolA->id, 'name' => 'Test Asset School A']);
 		$assetB = factory(Asset::class)->create(['school_id' => $schoolB->id, 'name' => 'Test Asset School B']);
 
@@ -196,6 +204,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
 		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
 		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
@@ -209,6 +218,7 @@ class AssetControllerTest extends TestCase
 		$this->assertDatabaseHas('assets', [
 			'id' => $asset->id,
 			'category_id' => $asset->category_id,
+			'type_id' => $asset->type_id,
 			'school_id' => $school->id,
 			'name' => $asset->name,
 			'tag' => $asset->tag,
@@ -217,7 +227,8 @@ class AssetControllerTest extends TestCase
 
 		$response = $this->actingAs($userB)->post(route('assets.store'), [
 			'school_id' => $school->id,
-			'category_id' => $category->id,
+			'category_id' => $asset->category_id,
+			'type_id' => $asset->type_id,
 			'name' => 'My Second Test Asset',
 			'tag' => '97531'
 		]);
@@ -232,6 +243,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$role = factory(Role::class)->create(['name' => 'Read Only']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 
@@ -254,6 +266,7 @@ class AssetControllerTest extends TestCase
 
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
 
 		$userA->schools()->attach($school->id);
@@ -278,6 +291,7 @@ class AssetControllerTest extends TestCase
 
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create(['school_id' => $school->id]);
 
 		$user->schools()->attach($school->id);
@@ -291,15 +305,11 @@ class AssetControllerTest extends TestCase
 	 * Test a user can update assets if authorised as contributor or admin
 	 */
 	public function test_a_user_can_update_assets_if_contributor_or_admin()
-
-		/*
-		 * Test users with read only role cannot update assets
-		 */
 	{
-		$this->withoutExceptionHandling();
 
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
 		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
 		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
@@ -314,6 +324,7 @@ class AssetControllerTest extends TestCase
 		$response = $this->actingAs($userA)->put(route('assets.update', ['id' => $assetA->id]), [
 			'school_id' => $assetA->school_id,
 			'category_id' => $assetA->category_id,
+			'type_id' => $assetA->type_id,
 			'tag' => $assetA->tag,
 			'name' => 'My First Updated Asset',
 		]);
@@ -323,16 +334,22 @@ class AssetControllerTest extends TestCase
 		$response = $this->actingAs($userB)->put(route('assets.update', ['id' => $assetB->id]), [
 			'school_id' => $assetB->school_id,
 			'category_id' => $assetB->category_id,
+			'type_id' => $assetB->type_id,
 			'tag' => $assetB->tag,
 			'name' => 'My Second Updated Asset',
 		]);
 		$this->assertDatabaseHas('assets', ['id' => $assetB->id, 'name' => 'My Second Updated Asset']);
 		$response->assertSessionHas('alert.success', 'Asset updated!');
 	}
+
+	/*
+	 * Test users with read only role cannot update assets
+	 */
 	public function test_a_user_cannot_update_assets_if_read_only()
 	{
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$role = factory(Role::class)->create(['name' => 'Read Only']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'name' => 'My First Asset']);
@@ -356,6 +373,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
 		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'name' => 'My First Asset']);
@@ -375,6 +393,7 @@ class AssetControllerTest extends TestCase
 	{
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
 		$roleB = factory(Role::class)->create(['name' => 'Read Only']);
 		$userA = factory(User::class)->create(['role_id' => $roleA->id]);

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Asset;
 use App\Category;
 use App\School;
+use App\Type;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,6 +22,7 @@ class AssetTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create();
 
 		$this->assertDatabaseHas('assets', [
@@ -36,6 +38,7 @@ class AssetTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create([
 			'school_id' => $school->id,
 			'tag' => '13579',
@@ -61,6 +64,7 @@ class AssetTest extends TestCase
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
 		$asset = factory(Asset::class)->create([
 			'school_id' => $school->id,
 			'tag' => '98765',
