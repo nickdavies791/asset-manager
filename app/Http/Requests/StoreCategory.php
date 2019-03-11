@@ -24,9 +24,22 @@ class StoreCategory extends FormRequest
      * @return array
      */
     public function rules()
-    {
-        return [
-            'name' => 'required|string'
-        ];
-    }
+	{
+		return [
+			'name' => 'required|string'
+		];
+	}
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+	{
+		return [
+			'name.required' => 'Please enter a name for the category',
+			'name.string' => 'The name field must be a string'
+		];
+	}
 }
