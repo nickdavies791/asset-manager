@@ -18,7 +18,7 @@ class StoreAssetValidationTest extends TestCase
     /*
      * Tests a school field is required when storing an asset
      */
-    public function test_school_is_required()
+    public function test_school_id_is_required()
 	{
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
@@ -30,14 +30,14 @@ class StoreAssetValidationTest extends TestCase
 			'tag' => $this->faker->numberBetween(0, 1000),
 			'name' => $this->faker->word,
 		]);
-		$response->assertSessionHasErrors('school');
-		$this->assertEquals(session('errors')->get('school')[0], 'Please choose a school');
+		$response->assertSessionHasErrors('school_id');
+		$this->assertEquals(session('errors')->get('school_id')[0], 'Please choose a school');
 	}
 
 	/*
 	 * Test the school provided is an integer
 	 */
-	public function test_school_is_integer()
+	public function test_school_id_is_integer()
 	{
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
@@ -46,18 +46,18 @@ class StoreAssetValidationTest extends TestCase
 		$user->schools()->attach($school->id);
 
 		$response = $this->actingAs($user)->post(route('assets.store'), [
-			'school' => $this->faker->word,
+			'school_id' => $this->faker->word,
 			'tag' => $this->faker->numberBetween(0, 1000),
 			'name' => $this->faker->word,
 		]);
-		$response->assertSessionHasErrors('school');
-		$this->assertEquals(session('errors')->get('school')[0], 'The school provided is not in the correct format');
+		$response->assertSessionHasErrors('school_id');
+		$this->assertEquals(session('errors')->get('school_id')[0], 'The school provided is not in the correct format');
 	}
 
 	/*
 	 * Test the school provided exists in the database
 	 */
-	public function test_school_exists_in_database()
+	public function test_school_id_exists_in_database()
 	{
 		$role = factory(Role::class)->create(['name' => 'Administrator']);
 		$user = factory(User::class)->create(['role_id' => $role->id]);
@@ -66,12 +66,12 @@ class StoreAssetValidationTest extends TestCase
 		$user->schools()->attach($school->id);
 
 		$response = $this->actingAs($user)->post(route('assets.store'), [
-			'school' => 985,
+			'school_id' => 985,
 			'tag' => $this->faker->numberBetween(0, 1000),
 			'name' => $this->faker->word,
 		]);
-		$response->assertSessionHasErrors('school');
-		$this->assertEquals(session('errors')->get('school')[0], 'The school provided does not exist');
+		$response->assertSessionHasErrors('school_id');
+		$this->assertEquals(session('errors')->get('school_id')[0], 'The school provided does not exist');
 	}
 
 	/*

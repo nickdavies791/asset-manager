@@ -27,7 +27,7 @@ class StoreAsset extends FormRequest
 	public function rules()
 	{
 		return [
-			'school' => 'required|integer|exists:schools,id',
+			'school_id' => 'required|integer|exists:schools,id',
 			'tag' => [
 				'required',
 				Rule::unique('assets')->where(function ($query) {
@@ -55,9 +55,9 @@ class StoreAsset extends FormRequest
 	public function messages()
 	{
 		return [
-			'school.required' => 'Please choose a school',
-			'school.integer' => 'The school provided is not in the correct format',
-			'school.exists' => 'The school provided does not exist',
+			'school_id.required' => 'Please choose a school',
+			'school_id.integer' => 'The school provided is not in the correct format',
+			'school_id.exists' => 'The school provided does not exist',
 			'tag.required' => 'Please provide an asset tag for this asset',
 			'tag.unique' => 'This tag is taken by another asset. Please choose a unique tag',
 			'serial_number.string' => 'The serial number provided is not in the correct format',

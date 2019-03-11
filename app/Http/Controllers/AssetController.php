@@ -45,7 +45,7 @@ class AssetController extends Controller
 			return redirect('home')->with('alert.danger', 'You do not have access to create assets');
 		}
 		$asset = $this->asset->create([
-			'school_id' => $request->school,
+			'school_id' => $request->school_id,
 			'name' => $request->name,
 			'tag' => $request->tag,
 			'serial_number' => $request->serial_number,
@@ -107,7 +107,7 @@ class AssetController extends Controller
 			return redirect('home')->with('alert.danger', 'You do not have access to update assets');
 		}
 		$asset->update([
-			'school_id' => $request->school,
+			'school_id' => $request->school_id,
 			'tag' => $request->tag,
 			'name' => $request->name,
 			'serial_number' => $request->serial_number,

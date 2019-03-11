@@ -193,12 +193,43 @@ class AssetControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
 
 		$userA->schools()->attach($school->id);
+		$asset = factory(Asset::class)->create([
+			'school_id' => $school->id,
+			'name' => 'My Test Asset',
+			'tag' => '13579',
+			'serial_number' => $this->faker->bothify('****************'),
+			'make' => 'Apple',
+			'model' => 'iMac',
+			'processor' => 'Intel Core i7 9700K 3.6 GHz',
+			'memory' => '16GB',
+			'storage' => '512GB SSD',
+			'operating_system' => 'OS X High Sierra',
+			'warranty' => '3 Years',
+			'notes' => 'These are very useful notes for this asset.',
+		]);
 
-		$response = $this->actingAs($userA)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Test Asset', 'tag' => '13579']);
-		$this->assertDatabaseHas('assets', ['name' => 'My Test Asset', 'tag' => '13579']);
+		$response = $this->actingAs($userA)->post(route('assets.store'), $asset->toArray());
+		$this->assertDatabaseHas('assets', [
+			'school_id' => $school->id,
+			'name' => $asset->name,
+			'tag' => $asset->tag,
+			'serial_number' => $asset->serial_number,
+			'make' => $asset->make,
+			'model' => $asset->model,
+			'processor' => $asset->processor,
+			'memory' => $asset->memory,
+			'storage' => $asset->storage,
+			'operating_system' => $asset->operating_system,
+			'warranty' => $asset->warranty,
+			'notes' => $asset->notes,
+		]);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 
-		$response = $this->actingAs($userB)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Second Test Asset', 'tag' => '97531']);
+		$response = $this->actingAs($userB)->post(route('assets.store'), [
+			'school_id' => $school->id,
+			'name' => 'My Second Test Asset',
+			'tag' => '97531'
+		]);
 		$this->assertDatabaseHas('assets', ['name' => 'My Second Test Asset', 'tag' => '97531']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 	}
@@ -214,7 +245,7 @@ class AssetControllerTest extends TestCase
 
 		$user->schools()->attach($school->id);
 
-		$response = $this->actingAs($user)->post(route('assets.store'), ['school' => $school->id, 'name' => 'My Test Asset', 'tag' => '13579']);
+		$response = $this->actingAs($user)->post(route('assets.store'), ['school_id' => $school->id, 'name' => 'My Test Asset', 'tag' => '13579']);
 		$this->assertDatabaseMissing('assets', ['name' => 'My Test Asset', 'tag' => '13579']);
 		$response->assertStatus(403);
 	}
@@ -280,7 +311,7 @@ class AssetControllerTest extends TestCase
 		$userB->schools()->attach($school->id);
 
 		$response = $this->actingAs($userA)->put(route('assets.update', ['id' => $assetA->id]), [
-			'school' => $school->id,
+			'school_id' => $school->id,
 			'name' => 'My First Updated Asset',
 			'tag' => '13579'
 		]);
@@ -288,7 +319,7 @@ class AssetControllerTest extends TestCase
 		$response->assertSessionHas('alert.success', 'Asset updated!');
 
 		$response = $this->actingAs($userB)->put(route('assets.update', ['id' => $assetB->id]), [
-			'school' => $school->id,
+			'school_id' => $school->id,
 			'name' => 'My Second Updated Asset',
 			'tag' => '12345'
 		]);
@@ -309,7 +340,7 @@ class AssetControllerTest extends TestCase
 		$user->schools()->attach($school->id);
 
 		$response = $this->actingAs($user)->put(route('assets.update', ['id' => $asset->id]), [
-			'school' => $school->id,
+			'school_id' => $school->id,
 			'name' => 'My First Updated Asset',
 			'tag' => '13579'
 		]);
