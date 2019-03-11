@@ -11,6 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AssetSchoolRelationshipTest extends TestCase
 {
+	use RefreshDatabase;
+
     /*
      * An asset can belong to a school
      */
@@ -37,7 +39,7 @@ class AssetSchoolRelationshipTest extends TestCase
 		factory(Category::class)->create();
 		$school = factory(School::class)->create();
 		factory(Asset::class, 10)->create(['school_id' => $school->id]);
-		
+
 		$this->assertTrue($school->assets()->exists());
 	}
 }
