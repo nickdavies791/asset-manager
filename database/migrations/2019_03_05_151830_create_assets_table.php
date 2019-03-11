@@ -16,6 +16,7 @@ class CreateAssetsTable extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('school_id');
+            $table->unsignedBigInteger('category_id');
 			$table->string('name');
 			$table->string('tag');
 			$table->string('serial_number')->nullable();
@@ -32,6 +33,7 @@ class CreateAssetsTable extends Migration
 
         Schema::table('assets', function (Blueprint $table) {
         	$table->foreign('school_id')->references('id')->on('schools');
+        	$table->foreign('category_id')->references('id')->on('categories');
 		});
     }
 

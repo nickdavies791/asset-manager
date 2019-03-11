@@ -28,4 +28,12 @@ class Asset extends Model
 	{
 		return $this->belongsTo(School::class);
 	}
+
+	/*
+	 * Returns the category associated with an asset
+	 */
+	public function category()
+	{
+		return $this->belongsTo(Category::class);
+	}
 }

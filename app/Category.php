@@ -20,4 +20,12 @@ class Category extends Model
 	 * @var boolean
 	 */
 	public $timestamps = false;
+
+	/*
+	 * Returns the assets associated with a category
+	 */
+	public function assets()
+	{
+		return $this->hasMany(Asset::class);
+	}
 }

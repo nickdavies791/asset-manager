@@ -4,7 +4,8 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Asset::class, function (Faker $faker) {
     return [
-    	'school_id' => 1,
+    	'school_id' => \App\School::all()->random()->id,
+    	'category_id' => \App\Category::all()->random()->id,
     	'tag' => $faker->ean8,
         'name' => $faker->sentence(2),
         'serial_number' => $faker->sentence(6),
