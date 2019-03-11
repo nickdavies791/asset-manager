@@ -349,6 +349,9 @@ class AssetControllerTest extends TestCase
 		$response->assertSessionHas('alert.danger', 'You do not have access to update assets');
 	}
 
+	/*
+	 * Test users can delete assets if has admin role
+	 */
 	public function test_a_user_can_delete_assets_if_admin()
 	{
 		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
