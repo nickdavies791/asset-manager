@@ -2,22 +2,35 @@
 
 namespace App\Http\Requests;
 
-use App\Asset;
+use App\Exceptions\UnauthorizedException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreUpdateAsset extends FormRequest
+class UpdateAsset extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
-	 * @param Asset $asset
 	 * @return bool
 	 */
-	public function authorize(Asset $asset)
-	{
-		return $this->user()->can('create', $asset);
+    public function authorize()
+    {
+		if ($this->user()->can('update', $this->asset)) {
+			return true;
+		}
 	}
+
+	/**
+	 * Handle a failed authorization attempt.
+	 *
+	 * @return void
+	 *
+	 * @throws UnauthorizedException
+	 */
+    protected function failedAuthorization()
+    {
+        throw new UnauthorizedException();
+    }
 
 	/**
 	 * Get the validation rules that apply to the request.
