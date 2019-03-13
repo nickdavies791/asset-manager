@@ -14,9 +14,7 @@ class UpdateType extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user()->can('update', $this->type)) {
-        	return true;
-		}
+    	return $this->user()->can('update', $this->type);
     }
 
 	/**

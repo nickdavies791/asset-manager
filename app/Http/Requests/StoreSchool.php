@@ -16,9 +16,7 @@ class StoreSchool extends FormRequest
 	 */
     public function authorize(School $school)
     {
-    	if ($this->user()->can('create', $school)) {
-    		return true;
-		}
+    	return $this->user()->can('create', $school);
     }
 
 	/**

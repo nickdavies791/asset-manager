@@ -17,9 +17,7 @@ class StoreAsset extends FormRequest
 	 */
 	public function authorize(Asset $asset)
 	{
-		if ($this->user()->can('create', $asset)) {
-			return true;
-		}
+		return $this->user()->can('create', $asset);
 	}
 
 	/**

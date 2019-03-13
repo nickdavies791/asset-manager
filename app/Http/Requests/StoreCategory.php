@@ -16,9 +16,7 @@ class StoreCategory extends FormRequest
 	 */
     public function authorize(Category $category)
     {
-    	if ($this->user()->can('create', $category)) {
-    		return true;
-		}
+    	return $this->user()->can('create', $category);
     }
 
 	/**

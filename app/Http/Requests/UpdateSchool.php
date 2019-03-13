@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Exceptions\UnauthorizedException;
-use App\School;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSchool extends FormRequest
@@ -11,14 +10,11 @@ class UpdateSchool extends FormRequest
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
-	 * @param School $school
 	 * @return bool
 	 */
-    public function authorize(School $school)
+    public function authorize()
     {
-        if ($this->user()->can('create', $school)) {
-        	return true;
-		}
+    	return $this->user()->can('update', $this->school);
     }
 
 	/**

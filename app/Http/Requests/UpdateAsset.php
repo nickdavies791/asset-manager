@@ -15,9 +15,7 @@ class UpdateAsset extends FormRequest
 	 */
     public function authorize()
     {
-		if ($this->user()->can('update', $this->asset)) {
-			return true;
-		}
+    	return $this->user()->can('update', $this->asset);
 	}
 
 	/**

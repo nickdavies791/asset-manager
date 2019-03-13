@@ -16,9 +16,7 @@ class StoreType extends FormRequest
 	 */
     public function authorize(Type $type)
     {
-        if ($this->user()->can('create', $type)) {
-        	return true;
-		}
+    	return $this->user()->can('create', $type);
     }
 
 	/**
