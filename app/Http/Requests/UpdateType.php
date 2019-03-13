@@ -3,20 +3,18 @@
 namespace App\Http\Requests;
 
 use App\Exceptions\UnauthorizedException;
-use App\Type;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreType extends FormRequest
+class UpdateType extends FormRequest
 {
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @param Type $type
-	 * @return bool
-	 */
-    public function authorize(Type $type)
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        if ($this->user()->can('create', $type)) {
+        if ($this->user()->can('update', $this->type)) {
         	return true;
 		}
     }
@@ -58,3 +56,4 @@ class StoreType extends FormRequest
 		];
 	}
 }
+
