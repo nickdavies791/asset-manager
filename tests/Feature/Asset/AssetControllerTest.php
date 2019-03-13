@@ -137,7 +137,7 @@ class AssetControllerTest extends TestCase
 		$response->assertSee('Test Asset School A');
 		$response = $this->actingAs($user)->get(route('schools.assets', ['id' => $schoolB->id]));
 		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to view this school\'s assets');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
