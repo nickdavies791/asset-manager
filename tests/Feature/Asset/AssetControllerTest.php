@@ -362,8 +362,7 @@ class AssetControllerTest extends TestCase
 			'tag' => '13579'
 		]);
 		$this->assertDatabaseMissing('assets', ['id' => $asset->id, 'name' => 'My First Updated Asset', 'tag' => '13579']);
-		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to update assets');
+		$response->assertStatus(403);
 	}
 
 	/*

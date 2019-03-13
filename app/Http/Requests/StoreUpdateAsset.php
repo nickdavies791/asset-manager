@@ -6,7 +6,7 @@ use App\Asset;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreAsset extends FormRequest
+class StoreUpdateAsset extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
