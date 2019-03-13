@@ -2,22 +2,20 @@
 
 namespace App\Http\Requests;
 
-use App\Category;
 use App\Exceptions\UnauthorizedException;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategory extends FormRequest
+class UpdateCategory extends FormRequest
 {
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @param Category $category
-	 * @return bool
-	 */
-    public function authorize(Category $category)
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-    	if ($this->user()->can('create', $category)) {
-    		return true;
+        if ($this->user()->can('update', $this->category)) {
+        	return true;
 		}
     }
 
@@ -39,11 +37,11 @@ class StoreCategory extends FormRequest
      * @return array
      */
     public function rules()
-	{
-		return [
-			'name' => 'required|string'
-		];
-	}
+    {
+        return [
+            'name' => 'required|string'
+        ];
+    }
 
     /**
      * Get custom messages for validator errors.

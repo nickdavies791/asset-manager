@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Exceptions\UnauthorizedException;
 use App\Http\Requests\StoreCategory;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateCategory;
 
 class CategoryController extends Controller
 {
@@ -23,11 +24,12 @@ class CategoryController extends Controller
 	 * Returns the form to create new categories
 	 *
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws UnauthorizedException
 	 */
 	public function create()
     {
         if (auth()->user()->cannot('create', $this->category)) {
-        	return redirect('home')->with('alert.danger', 'You do not have access to create categories');
+        	throw new UnauthorizedException();
 		}
 
         return view('categories.create');
@@ -41,10 +43,6 @@ class CategoryController extends Controller
 	 */
 	public function store(StoreCategory $request)
     {
-		if (auth()->user()->cannot('create', $this->category)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to create categories');
-		}
-
 		$this->category->create([
 			'name' => $request->name
 		]);
@@ -57,11 +55,12 @@ class CategoryController extends Controller
 	 *
 	 * @param Category $category
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws UnauthorizedException
 	 */
 	public function edit(Category $category)
     {
         if (auth()->user()->cannot('update', $category)) {
-        	return redirect('home')->with('alert.danger', 'You do not have access to update categories');
+        	throw new UnauthorizedException();
 		}
         $category = $this->category->find($category->id);
 
@@ -71,15 +70,12 @@ class CategoryController extends Controller
 	/**
 	 * Updates the specified category in storage
 	 *
-	 * @param Request $request
+	 * @param UpdateCategory $request
 	 * @param Category $category
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
-	public function update(Request $request, Category $category)
+	public function update(UpdateCategory $request, Category $category)
     {
-        if (auth()->user()->cannot('update', $category)) {
-        	return redirect('home')->with('alert.danger', 'You do not have access to update categories');
-		}
         $category->name = $request->name;
         $category->save();
 
@@ -91,11 +87,12 @@ class CategoryController extends Controller
 	 *
 	 * @param Category $category
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws UnauthorizedException
 	 */
 	public function destroy(Category $category)
     {
 		if (auth()->user()->cannot('delete', $category)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to delete categories');
+			throw new UnauthorizedException();
 		}
 		$this->category->destroy($category->id);
 
