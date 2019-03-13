@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+    	$schools = auth()->user()->schools;
+
+        return view('home')->with('schools', $schools);
     }
 }

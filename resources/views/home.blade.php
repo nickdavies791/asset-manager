@@ -14,7 +14,11 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    @forelse($schools as $school)
+                        <a href="{{ route('schools.show', ['id' => $school->id]) }}">{{ $school->name }}</a><br />
+                    @empty
+                        You are not associated with any schools.
+                    @endforelse
                 </div>
             </div>
         </div>
