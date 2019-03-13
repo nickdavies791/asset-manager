@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UnauthorizedException;
 use App\Http\Requests\StoreSchool;
+use App\Http\Requests\UpdateSchool;
 use App\School;
-use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
@@ -35,11 +36,12 @@ class SchoolController extends Controller
 	 * Returns the form to create new schools
 	 *
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 * @throws UnauthorizedException
 	 */
 	public function create()
 	{
 		if (auth()->user()->cannot('create', $this->school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to create schools');
+			throw new UnauthorizedException();
 		}
 
 		return view('schools.create');
@@ -53,9 +55,6 @@ class SchoolController extends Controller
 	 */
 	public function store(StoreSchool $request)
 	{
-		if (auth()->user()->cannot('create', $this->school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to create schools');
-		}
 		$school = $this->school->create([
 			'name' => $request->name
 		]);
@@ -69,11 +68,12 @@ class SchoolController extends Controller
 	 *
 	 * @param School $school
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 * @throws UnauthorizedException
 	 */
 	public function show(School $school)
 	{
 		if (auth()->user()->cannot('view', $school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to this school');
+			throw new UnauthorizedException();
 		}
 		$school = $this->school->find($school->id);
 
@@ -85,11 +85,12 @@ class SchoolController extends Controller
 	 *
 	 * @param School $school
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 * @throws UnauthorizedException
 	 */
 	public function edit(School $school)
 	{
 		if (auth()->user()->cannot('update', $school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to update schools');
+			throw new UnauthorizedException();
 		}
 		$school = $this->school->find($school->id);
 
@@ -99,15 +100,12 @@ class SchoolController extends Controller
 	/**
 	 * Updates the specified school in storage
 	 *
-	 * @param Request $request
+	 * @param UpdateSchool $request
 	 * @param School $school
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 */
-	public function update(Request $request, School $school)
+	public function update(UpdateSchool $request, School $school)
 	{
-		if (auth()->user()->cannot('update', $school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to update schools');
-		}
 		$school->name = $request->name;
 		$school->save();
 
@@ -119,12 +117,12 @@ class SchoolController extends Controller
 	 *
 	 * @param School $school
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-	 * @throws \Exception
+	 * @throws UnauthorizedException
 	 */
 	public function destroy(School $school)
 	{
 		if (auth()->user()->cannot('delete', $school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to delete schools');
+			throw new UnauthorizedException();
 		}
 		$this->school->destroy($school->id);
 

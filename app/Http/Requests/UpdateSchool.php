@@ -6,7 +6,7 @@ use App\Exceptions\UnauthorizedException;
 use App\School;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSchool extends FormRequest
+class UpdateSchool extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -16,8 +16,8 @@ class StoreSchool extends FormRequest
 	 */
     public function authorize(School $school)
     {
-    	if ($this->user()->can('create', $school)) {
-    		return true;
+        if ($this->user()->can('create', $school)) {
+        	return true;
 		}
     }
 
