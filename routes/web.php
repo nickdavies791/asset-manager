@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-	return view('welcome');
-});
+Auth::routes(['register' => false]);
 
-Auth::routes();
+Route::get('/', function () {
+	return redirect('login');
+})->middleware('guest');
 
 Route::group(['middleware' => ['auth']], function () {
 	Route::get('/home', 'HomeController@index')->name('home');
