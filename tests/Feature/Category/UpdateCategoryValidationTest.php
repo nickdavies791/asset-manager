@@ -43,4 +43,22 @@ class UpdateCategoryValidationTest extends TestCase
 		$response->assertSessionHasErrors('name');
 		$this->assertEquals(session('errors')->get('name')[0], 'The name field must be a string');
 	}
+
+	/*
+	 * Test name field is unique
+	 */
+	public function test_name_field_is_unique()
+	{
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+		factory(Category::class)->create(['name' => 'Building']);
+
+		$category = factory(Category::class)->create(['name' => 'IT Equipment']);
+
+		$response = $this->actingAs($user)->put(route('categories.update', ['id' => $category->id]), [
+			'name' => 'Building'
+		]);
+		$response->assertSessionHasErrors('name');
+		$this->assertEquals(session('errors')->get('name')[0], 'A category with this name already exists');
+	}
 }

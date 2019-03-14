@@ -39,7 +39,7 @@ class StoreCategory extends FormRequest
     public function rules()
 	{
 		return [
-			'name' => 'required|string'
+			'name' => 'required|string|unique:categories'
 		];
 	}
 
@@ -52,7 +52,8 @@ class StoreCategory extends FormRequest
 	{
 		return [
 			'name.required' => 'Please enter a name for the category',
-			'name.string' => 'The name field must be a string'
+			'name.string' => 'The name field must be a string',
+			'name.unique' => 'A category with this name already exists'
 		];
 	}
 }
