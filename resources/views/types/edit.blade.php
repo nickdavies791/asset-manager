@@ -8,11 +8,15 @@
                 <div class="card-header">Update Asset Type</div>
 
                 <div class="card-body">
+                    @include('partials.errors.errors')
                     <form method="POST" action="{{ route('types.update', ['id' => $type->id]) }}">
                         @csrf
                         @method('PUT')
-                        <input type="text" name="name" placeholder="Enter type name" value="{{ $type->name }}">
-                        <button type="submit">Save Type</button>
+                        <div class="form-group">
+                            <label for="name">Asset Type Name</label>
+                            <input class="form-control" id="name" type="text" name="name" placeholder="Enter type name" value="{{ $type->name }}" required>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Save Type</button>
                     </form>
                 </div>
             </div>

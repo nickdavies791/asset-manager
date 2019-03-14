@@ -9,6 +9,8 @@
 
                 <div class="card-body">
                     <a href="{{ route('schools.create') }}" class="btn btn-primary">Create School</a>
+                    <a href="{{ route('categories.create') }}" class="btn btn-primary">Create Category</a>
+                    <a href="{{ route('types.create') }}" class="btn btn-primary">Create Asset Type</a>
                 </div>
             </div>
         </div>
