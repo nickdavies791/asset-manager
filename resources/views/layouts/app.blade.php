@@ -25,5 +25,6 @@
             @yield('content')
         </main>
     </div>
+    @include('partials.alerts.alert-growl')
 </body>
 </html>

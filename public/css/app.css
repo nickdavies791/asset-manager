@@ -14848,6 +14848,69 @@ a.text-lighter:focus {
   border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
 }
 
+.alert-growl {
+  top: -800px;
+  right: 2em;
+  position: absolute;
+  z-index: 9999;
+  animation-name: slideInGrowl;
+  animation-duration: 8s;
+  -webkit-animation-name: slideInGrowl;
+  -webkit-animation-duration: 8s;
+}
+
+@-webkit-keyframes slideInGrowl {
+  0% {
+    top: -800px;
+  }
+
+  10% {
+    top: 10px;
+  }
+
+  50% {
+    top: 10px;
+  }
+
+  75% {
+    top: 10px;
+  }
+
+  80% {
+    top: 15px;
+  }
+
+  100% {
+    top: -800px;
+  }
+}
+
+@keyframes slideInGrowl {
+  0% {
+    top: -800px;
+  }
+
+  10% {
+    top: 10px;
+  }
+
+  50% {
+    top: 10px;
+  }
+
+  75% {
+    top: 10px;
+  }
+
+  80% {
+    top: 15px;
+  }
+
+  100% {
+    top: -800px;
+  }
+}
+
 .alert-dismissible .close {
   top: 50%;
   right: 1.5rem;
