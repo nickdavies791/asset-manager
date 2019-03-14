@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth']], function () {
 	Route::get('/home', 'HomeController@index')->name('home');
+	Route::resource('settings', 'SettingsController')->only(['index']);
 	Route::resource('schools', 'SchoolController');
 	Route::resource('categories', 'CategoryController')->except(['index', 'show']);
 	Route::resource('types', 'TypeController')->except(['index', 'show']);
