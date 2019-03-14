@@ -43,4 +43,21 @@ class UpdateTypeValidationTest extends TestCase
 		$response->assertSessionHasErrors('name');
 		$this->assertEquals(session('errors')->get('name')[0], 'The name field must be a string');
 	}
+
+	/*
+	 * Test the name field is unique
+	 */
+	public function test_name_field_is_unique()
+	{
+		$role = factory(Role::class)->create(['name' => 'Administrator']);
+		$user = factory(User::class)->create(['role_id' => $role->id]);
+		factory(Type::class)->create(['name' => 'Fixtures and Fittings']);
+		$type = factory(Type::class)->create(['name' => 'IT Equipment']);
+
+		$response = $this->actingAs($user)->put(route('types.update', ['id' => $type->id]), [
+			'name' => 'Fixtures and Fittings'
+		]);
+		$response->assertSessionHasErrors('name');
+		$this->assertEquals(session('errors')->get('name')[0], 'An asset type with this name already exists');
+	}
 }

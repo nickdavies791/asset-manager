@@ -37,7 +37,7 @@ class UpdateType extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string'
+            'name' => 'required|string|unique:types'
         ];
     }
 
@@ -50,7 +50,8 @@ class UpdateType extends FormRequest
 	{
 		return [
 			'name.required' => 'Please enter a name for the asset type',
-			'name.string' => 'The name field must be a string'
+			'name.string' => 'The name field must be a string',
+			'name.unique' => 'An asset type with this name already exists'
 		];
 	}
 }
