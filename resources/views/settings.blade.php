@@ -8,7 +8,7 @@
                 <div class="card-header">Settings</div>
 
                 <div class="card-body">
-
+                    <a href="{{ route('schools.create') }}" class="btn btn-primary">Create School</a>
                 </div>
             </div>
         </div>
