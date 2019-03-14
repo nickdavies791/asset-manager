@@ -16,7 +16,7 @@ class ViewServiceProvider extends ServiceProvider
     public function register()
     {
         View::composer(
-        	'*', SchoolUserComposer::class
+        	'partials.nav', SchoolUserComposer::class
 		);
     }
 
