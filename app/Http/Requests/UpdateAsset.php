@@ -39,6 +39,8 @@ class UpdateAsset extends FormRequest
 	{
 		return [
 			'school_id' => 'required|integer|exists:schools,id',
+			'category_id' => 'required|integer|exists:categories,id',
+			'type_id' => 'required|integer|exists:types,id',
 			'tag' => [
 				'required',
 				Rule::unique('assets')->where(function ($query) {
@@ -69,6 +71,12 @@ class UpdateAsset extends FormRequest
 			'school_id.required' => 'Please choose a school',
 			'school_id.integer' => 'The school provided is not in the correct format',
 			'school_id.exists' => 'The school provided does not exist',
+			'category_id.required' => 'Please choose a category',
+			'category_id.integer' => 'The category provided is not in the correct format',
+			'category_id.exists' => 'The category provided does not exist',
+			'type_id.required' => 'Please choose an asset type',
+			'type_id.integer' => 'The asset type provided is not in the correct format',
+			'type_id.exists' => 'The asset type provided does not exist',
 			'tag.required' => 'Please provide an asset tag for this asset',
 			'tag.unique' => 'This tag is taken by another asset. Please choose a unique tag',
 			'serial_number.string' => 'The serial number provided is not in the correct format',
