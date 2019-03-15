@@ -11,6 +11,7 @@
                     @include('partials.errors.errors')
                     <form method="POST" action="{{ route('assets.store') }}">
                         @csrf
+                        <school-selector token="{{ auth()->user()->api_token }}"></school-selector>
                         <div class="form-group">
                             <label for="name">Asset Name</label>
                             <input class="form-control" id="name" type="text" name="name" placeholder="Enter asset name" required>
