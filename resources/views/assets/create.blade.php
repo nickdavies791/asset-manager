@@ -12,6 +12,8 @@
                     <form method="POST" action="{{ route('assets.store') }}">
                         @csrf
                         <school-selector token="{{ auth()->user()->api_token }}"></school-selector>
+                        <type-selector token="{{ auth()->user()->api_token }}"></type-selector>
+                        <category-selector token="{{ auth()->user()->api_token }}"></category-selector>
                         <div class="form-group">
                             <label for="name">Asset Name</label>
                             <input class="form-control" id="name" type="text" name="name" placeholder="Enter asset name" required>
@@ -24,3 +26,9 @@
     </div>
 </div>
 @endsection
+<script>
+    import CategorySelector from "../../js/components/CategorySelector";
+    export default {
+        components: {CategorySelector}
+    }
+</script>

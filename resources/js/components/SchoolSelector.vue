@@ -1,7 +1,7 @@
 <template>
     <div class="form-group">
         <label for="school_id">School</label>
-        <select class="form-control" id="school_id" name="school">
+        <select v-model="school" class="form-control" id="school_id" name="school_id">
             <option v-for="school in schools" :value="school.id">{{ school.name }}</option>
         </select>
     </div>
@@ -18,6 +18,7 @@
 
         data() {
             return {
+                school: null,
                 schools: [],
             }
         },
