@@ -33,9 +33,10 @@
 
         methods: {
             getCategories() {
-                axios.get('/api/categories?type='+this.type, {
+                axios.get('/api/categories', {
                     params: {
                         'api_token': this.token,
+                        'type': this.type,
                     }
                 }).then(response => (this.categories = response.data))
             }

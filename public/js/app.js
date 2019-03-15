@@ -1799,9 +1799,10 @@ __webpack_require__.r(__webpack_exports__);
     getCategories: function getCategories() {
       var _this2 = this;
 
-      axios.get('/api/categories?type=' + this.type, {
+      axios.get('/api/categories', {
         params: {
-          'api_token': this.token
+          'api_token': this.token,
+          'type': this.type
         }
       }).then(function (response) {
         return _this2.categories = response.data;

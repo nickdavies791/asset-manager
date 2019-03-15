@@ -18,10 +18,10 @@ Route::middleware('auth:api')->get('/user/schools', function (Request $request) 
 	return $request->user()->schools;
 });
 
-Route::middleware('auth:api')->get('/categories', function (Request $request, Type $type) {
-	return $type->find($request->type)->categories;
-});
-
 Route::middleware('auth:api')->get('/types', function (Type $type) {
 	return $type->all();
+});
+
+Route::middleware('auth:api')->get('/categories', function (Request $request, Type $type) {
+	return $type->find($request->type)->categories;
 });
