@@ -36975,7 +36975,7 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { id: "category_id", name: "category" },
+        attrs: { id: "category_id", name: "category_id" },
         on: {
           change: function($event) {
             var $$selectedVal = Array.prototype.filter

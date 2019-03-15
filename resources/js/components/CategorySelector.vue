@@ -1,7 +1,7 @@
 <template>
     <div class="form-group">
         <label for="category_id">Category</label>
-        <select v-model="category" class="form-control" id="category_id" name="category">
+        <select v-model="category" class="form-control" id="category_id" name="category_id">
             <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
         </select>
     </div>
