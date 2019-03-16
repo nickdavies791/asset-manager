@@ -49291,7 +49291,17 @@ Vue.component('type-selector', __webpack_require__(/*! ./components/TypeSelector
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    type: null
+  },
+  created: function created() {
+    var _this = this;
+
+    Event.$on('typeChanged', function (newType) {
+      _this.type = newType;
+    });
+  }
 });
 
 /***/ }),

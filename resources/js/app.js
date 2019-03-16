@@ -32,5 +32,13 @@ Vue.component('type-selector', require('./components/TypeSelector.vue').default)
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        type: null,
+    },
+    created() {
+        Event.$on('typeChanged', newType => {
+            this.type = newType;
+        });
+    }
 });
