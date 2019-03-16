@@ -115,12 +115,14 @@ class StoreAssetValidationTest extends TestCase
 		$type = factory(Type::class)->create();
 		$user->schools()->attach($school->id);
 
-		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'tag' => '12345']);
+		factory(Asset::class)->create(['school_id' => $school->id, 'tag' => '12345']);
 
 		$response = $this->actingAs($user)->post(route('assets.store'), [
-			'school' => $school->id,
+			'school_id' => $school->id,
+			'category_id' => $category->id,
+			'type_id' => $type->id,
 			'tag' => '12345',
-			'name' => $asset->name
+			'name' => 'My Test Asset'
 		]);
 		$response->assertSessionHasErrors('tag');
 		$this->assertEquals(session('errors')->get('tag')[0], 'This tag is taken by another asset. Please choose a unique tag');

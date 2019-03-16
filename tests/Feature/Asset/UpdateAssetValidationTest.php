@@ -123,12 +123,25 @@ class UpdateAssetValidationTest extends TestCase
 		$type = factory(Type::class)->create();
 		$user->schools()->attach($school->id);
 
-		$asset = factory(Asset::class)->create(['school_id' => $school->id, 'tag' => '12345']);
+		$assetA = factory(Asset::class)->create(['school_id' => $school->id, 'tag' => '12345']);
+		$assetB = factory(Asset::class)->create(['school_id' => $school->id, 'tag' => '09876']);
 
-		$response = $this->actingAs($user)->put(route('assets.update', ['id' => $asset->id]), [
-			'school' => $school->id,
+		$response = $this->actingAs($user)->put(route('assets.update', ['id' => $assetA->id]), [
+			'school_id' => $assetA->school_id,
+			'category_id' => $assetA->category_id,
+			'type_id' => $assetA->type_id,
 			'tag' => '12345',
-			'name' => $asset->name
+			'name' => 'Test Update Asset'
+		]);
+		$response->assertRedirect(route('assets.show', ['id' => $assetA->id]));
+		$response->assertSessionHas('alert.success', 'Asset updated!');
+
+		$response = $this->actingAs($user)->put(route('assets.update', ['id' => $assetA->id]), [
+			'school_id' => $assetA->school_id,
+			'category_id' => $assetA->category_id,
+			'type_id' => $assetA->type_id,
+			'tag' => '09876',
+			'name' => 'Test Update Asset'
 		]);
 		$response->assertSessionHasErrors('tag');
 		$this->assertEquals(session('errors')->get('tag')[0], 'This tag is taken by another asset. Please choose a unique tag');

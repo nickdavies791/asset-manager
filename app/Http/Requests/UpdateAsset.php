@@ -43,7 +43,7 @@ class UpdateAsset extends FormRequest
 			'type_id' => 'required|integer|exists:types,id',
 			'tag' => [
 				'required',
-				Rule::unique('assets')->where(function ($query) {
+				Rule::unique('assets')->ignore(request('asset')->id)->where(function ($query) {
 					$query->where('school_id', request('school_id'));
 				}),
 			],

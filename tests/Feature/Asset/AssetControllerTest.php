@@ -211,28 +211,38 @@ class AssetControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
 
 		$userA->schools()->attach($school->id);
-		$asset = factory(Asset::class)->create();
 
-		$response = $this->actingAs($userA)->post(route('assets.store'), $asset->toArray());
+		$response = $this->actingAs($userA)->post(route('assets.store'), [
+			'category_id' => $category->id,
+			'type_id' => $type->id,
+			'school_id' => $school->id,
+			'name' => 'Test Asset',
+			'tag' => 'ABC123',
+		]);
 
 		$this->assertDatabaseHas('assets', [
-			'id' => $asset->id,
-			'category_id' => $asset->category_id,
-			'type_id' => $asset->type_id,
+			'category_id' => $category->id,
+			'type_id' => $type->id,
 			'school_id' => $school->id,
-			'name' => $asset->name,
-			'tag' => $asset->tag,
+			'name' => 'Test Asset',
+			'tag' => 'ABC123',
 		]);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 
 		$response = $this->actingAs($userB)->post(route('assets.store'), [
+			'category_id' => $category->id,
+			'type_id' => $type->id,
 			'school_id' => $school->id,
-			'category_id' => $asset->category_id,
-			'type_id' => $asset->type_id,
-			'name' => 'My Second Test Asset',
-			'tag' => '97531'
+			'name' => 'Test Second Asset',
+			'tag' => 'ABC456',
 		]);
-		$this->assertDatabaseHas('assets', ['name' => 'My Second Test Asset', 'tag' => '97531']);
+		$this->assertDatabaseHas('assets', [
+			'category_id' => $category->id,
+			'type_id' => $type->id,
+			'school_id' => $school->id,
+			'name' => 'Test Second Asset',
+			'tag' => 'ABC456',
+		]);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 	}
 
@@ -327,7 +337,6 @@ class AssetControllerTest extends TestCase
 
 		$userA->schools()->attach($school->id);
 		$userB->schools()->attach($school->id);
-
 		$response = $this->actingAs($userA)->put(route('assets.update', ['id' => $assetA->id]), [
 			'school_id' => $assetA->school_id,
 			'category_id' => $assetA->category_id,
