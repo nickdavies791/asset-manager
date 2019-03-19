@@ -40,25 +40,16 @@ class StoreAsset extends FormRequest
 	public function rules()
 	{
 		return [
-			'school_id' => 'required|integer|exists:schools,id',
-			'category_id' => 'required|integer|exists:categories,id',
-			'type_id' => 'required|integer|exists:types,id',
+			'school_id' => 'required|exists:schools,id',
+			'category_id' => 'required|exists:categories,id',
+			'type_id' => 'required|exists:types,id',
 			'tag' => [
 				'required',
 				Rule::unique('assets')->where(function ($query) {
 					$query->where('school_id', request('school_id'));
 				}),
 			],
-			'name' => 'required|string',
-			'serial_number' => 'string',
-			'make' => 'string',
-			'model' => 'string',
-			'processor' => 'string',
-			'memory' => 'string',
-			'storage' => 'string',
-			'operating_system' => 'string',
-			'warranty' => 'string',
-			'notes' => 'string',
+			'name' => 'required',
 		];
 	}
 
@@ -81,15 +72,7 @@ class StoreAsset extends FormRequest
 			'type_id.exists' => 'The asset type provided does not exist',
 			'tag.required' => 'Please provide an asset tag for this asset',
 			'tag.unique' => 'This tag is taken by another asset. Please choose a unique tag',
-			'serial_number.string' => 'The serial number provided is not in the correct format',
-			'make.string' => 'The make provided is not in the correct format',
-			'model.string' => 'The model provided is not in the correct format',
-			'processor.string' => 'The processor provided is not in the correct format',
-			'memory.string' => 'The memory provided is not in the correct format',
-			'storage.string' => 'The storage provided is not in the correct format',
-			'operating_system.string' => 'The operating system provided is not in the correct format',
-			'warranty.string' => 'The warranty provided is not in the correct format',
-			'notes.string' => 'Notes provided is not in the correct format',
+			'name.required' => 'Please give this asset a name',
 		];
 	}
 }

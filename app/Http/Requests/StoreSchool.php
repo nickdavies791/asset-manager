@@ -39,7 +39,7 @@ class StoreSchool extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string'
+            'name' => 'required'
         ];
     }
 
@@ -52,7 +52,6 @@ class StoreSchool extends FormRequest
 	{
 		return [
 			'name.required' => 'Please enter a name for the school',
-			'name.string' => 'The name field must be a string'
 		];
 	}
 }

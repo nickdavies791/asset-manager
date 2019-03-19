@@ -37,7 +37,7 @@ class UpdateCategory extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:categories'
+            'name' => 'required|unique:categories'
         ];
     }
 
@@ -50,7 +50,6 @@ class UpdateCategory extends FormRequest
 	{
 		return [
 			'name.required' => 'Please enter a name for the category',
-			'name.string' => 'The name field must be a string',
 			'name.unique' => 'A category with this name already exists'
 		];
 	}

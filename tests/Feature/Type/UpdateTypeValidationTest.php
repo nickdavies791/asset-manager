@@ -29,22 +29,6 @@ class UpdateTypeValidationTest extends TestCase
 	}
 
 	/*
-	 * Test name field is of type string
-	 */
-	public function test_name_field_is_string()
-	{
-		$role = factory(Role::class)->create(['name' => 'Administrator']);
-		$user = factory(User::class)->create(['role_id' => $role->id]);
-		$type = factory(Type::class)->create();
-
-		$response = $this->actingAs($user)->put(route('types.update', ['id' => $type->id]), [
-			'name' => $this->faker->randomNumber()
-		]);
-		$response->assertSessionHasErrors('name');
-		$this->assertEquals(session('errors')->get('name')[0], 'The name field must be a string');
-	}
-
-	/*
 	 * Test the name field is unique
 	 */
 	public function test_name_field_is_unique()
