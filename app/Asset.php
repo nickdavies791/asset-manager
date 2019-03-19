@@ -44,4 +44,12 @@ class Asset extends Model
 	{
 		return $this->belongsTo(Type::class);
 	}
+
+	/*
+	 * Returns the finance records associated with an asset
+	 */
+	public function finances()
+	{
+		return $this->hasMany(Finance::class);
+	}
 }
