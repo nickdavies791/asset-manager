@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">School</div>
+                <div class="card-header">{{ $school->name }}</div>
 
                 <div class="card-body">
-                    {{ $school->name }}
+                    <a class="btn btn-primary" href="{{ route('schools.assets', ['id' => $school->id]) }}">View Assets</a>
                 </div>
             </div>
         </div>
