@@ -2,11 +2,10 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-6">
             <div class="card">
-                <div class="card-header">Create Asset</div>
-
+                <div class="card-header">Asset Information</div>
                 <div class="card-body">
                     @include('partials.errors.errors')
                     <form method="POST" action="{{ route('assets.store') }}">
@@ -82,10 +81,18 @@
                         </div>
                         <div class="form-group">
                             <label for="notes">Additional Notes</label>
-                            <textarea class="form-control" id="notes" name="notes" placeholder="Enter notes information"></textarea>
+                            <textarea class="form-control" id="notes" name="notes" placeholder="Enter additional notes"></textarea>
                         </div>
                         <button class="btn btn-primary" type="submit">Save Asset</button>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Finance Information</div>
+                <div class="card-body">
+                    <create-asset-finance></create-asset-finance>
                 </div>
             </div>
         </div>

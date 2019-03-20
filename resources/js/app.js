@@ -24,6 +24,7 @@ window.Event = new Vue();
 Vue.component('school-selector', require('./components/SchoolSelector.vue').default);
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
 Vue.component('type-selector', require('./components/TypeSelector.vue').default);
+Vue.component('create-asset-finance', require('./components/CreateAssetFinance.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
