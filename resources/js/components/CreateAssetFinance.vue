@@ -1,16 +1,30 @@
 <template>
     <div>
         <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Accounting Start</label>
+                    <input class="form-control" type="date" name="accounting_start" v-model="account_start">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Accounting End</label>
+                    <input class="form-control" type="date" name="accounting_end" v-model="account_end">
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label>Purchase Date</label>
-                    <input class="form-control" type="date" v-model="purchase_date">
+                    <input class="form-control" type="date" name="purchase_date" v-model="purchase_date">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label>End Date</label>
-                    <input class="form-control" type="date" v-model="lifetime_end_date">
+                    <label>End of Life</label>
+                    <input class="form-control" type="date" name="end_of_life" v-model="lifetime_end_date">
                 </div>
             </div>
             <div class="col-md-4">
@@ -22,25 +36,25 @@
         </div>
         <div class="form-group">
             <label>Purchase Cost</label>
-            <input class="form-control" type="number" step="0.01" v-model="cost">
+            <input class="form-control" type="number" step="0.01" name="purchase_cost" v-model="cost">
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Current Value</label>
-                    <input class="form-control" type="number" step="0.01" v-model="costs.value">
+                    <input class="form-control" type="number" step="0.01" name="current_value" v-model="costs.value">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Charges</label>
-                    <input class="form-control" type="number" step="0.01" :value="getDepreciationCharges" disabled>
+                    <input class="form-control" type="number" step="0.01" name="depreciation" :value="getDepreciationCharges" readonly>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label>Net Book Value</label>
-            <input class="form-control" type="number" step="0.01" :value="getNetBookValue" disabled>
+            <input class="form-control" type="number" step="0.01" name="net_book_value" :value="getNetBookValue" readonly>
         </div>
     </div>
 </template>

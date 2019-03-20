@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Asset;
 use App\Category;
+use App\Finance;
 use App\Role;
 use App\School;
 use App\Type;
@@ -211,38 +212,50 @@ class AssetControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
 
 		$userA->schools()->attach($school->id);
+		$userB->schools()->attach($school->id);
+
+		$asset = factory(Asset::class)->make();
 
 		$response = $this->actingAs($userA)->post(route('assets.store'), [
-			'category_id' => $category->id,
-			'type_id' => $type->id,
-			'school_id' => $school->id,
-			'name' => 'Test Asset',
+			'school_id' => $asset->school_id,
+			'category_id' => $asset->category_id,
+			'type_id' => $asset->type_id,
+			'name' => $asset->name,
 			'tag' => 'ABC123',
+			'asset_id' => $asset->id,
+			'accounting_start' => '2019-01-01',
+			'accounting_end' => '2020-01-01',
+			'purchase_date' => '2019-05-05',
+			'end_of_life' => '2022-05-05',
+			'purchase_cost' => '5425.93',
+			'current_value' => '5425.93',
+			'depreciation' => '1790.56',
+			'net_book_value' => '4921.80'
 		]);
 
-		$this->assertDatabaseHas('assets', [
-			'category_id' => $category->id,
-			'type_id' => $type->id,
-			'school_id' => $school->id,
-			'name' => 'Test Asset',
-			'tag' => 'ABC123',
-		]);
+		$this->assertDatabaseHas('assets', ['tag' => 'ABC123']);
+		$this->assertDatabaseHas('finances', ['net_book_value' => '4921.80']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 
 		$response = $this->actingAs($userB)->post(route('assets.store'), [
-			'category_id' => $category->id,
-			'type_id' => $type->id,
-			'school_id' => $school->id,
-			'name' => 'Test Second Asset',
-			'tag' => 'ABC456',
+			'school_id' => $asset->school_id,
+			'category_id' => $asset->category_id,
+			'type_id' => $asset->type_id,
+			'name' => $asset->name,
+			'tag' => 'CBA123',
+			'asset_id' => $asset->id,
+			'accounting_start' => '2019-01-01',
+			'accounting_end' => '2020-01-01',
+			'purchase_date' => '2019-05-05',
+			'end_of_life' => '2022-05-05',
+			'purchase_cost' => '5425.93',
+			'current_value' => '5425.93',
+			'depreciation' => '1790.56',
+			'net_book_value' => '4921.80'
 		]);
-		$this->assertDatabaseHas('assets', [
-			'category_id' => $category->id,
-			'type_id' => $type->id,
-			'school_id' => $school->id,
-			'name' => 'Test Second Asset',
-			'tag' => 'ABC456',
-		]);
+
+		$this->assertDatabaseHas('assets', ['tag' => 'CBA123']);
+		$this->assertDatabaseHas('finances', ['net_book_value' => '4921.80']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 	}
 

@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Asset;
 use App\Exceptions\UnauthorizedException;
+use App\Finance;
 use App\Http\Requests\StoreAsset;
 use App\Http\Requests\UpdateAsset;
 
 class AssetController extends Controller
 {
 	protected $asset;
+	protected $finance;
 
 	/**
 	 * AssetController constructor.
 	 * @param Asset $asset
+	 * @param Finance $finance
 	 */
-	public function __construct(Asset $asset)
+	public function __construct(Asset $asset, Finance $finance)
 	{
 		$this->asset = $asset;
+		$this->finance = $finance;
 	}
 
 	/**
@@ -59,6 +63,20 @@ class AssetController extends Controller
 			'warranty' => $request->warranty,
 			'notes' => $request->notes,
 		]);
+
+		if ($asset->exists()) {
+			$this->finance->create([
+				'asset_id' => $asset->id,
+				'accounting_start' => $request->accounting_start,
+				'accounting_end' => $request->accounting_end,
+				'purchase_date' => $request->purchase_date,
+				'end_of_life' => $request->end_of_life,
+				'purchase_cost' => $request->purchase_cost,
+				'current_value' => $request->current_value,
+				'depreciation' => $request->depreciation,
+				'net_book_value' => $request->net_book_value,
+			]);
+		}
 
 		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset created!');
 	}

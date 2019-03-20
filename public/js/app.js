@@ -1868,6 +1868,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -54745,6 +54759,64 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Accounting Start")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.account_start,
+                expression: "account_start"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "date", name: "accounting_start" },
+            domProps: { value: _vm.account_start },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.account_start = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Accounting End")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.account_end,
+                expression: "account_end"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "date", name: "accounting_end" },
+            domProps: { value: _vm.account_end },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.account_end = $event.target.value
+              }
+            }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-4" }, [
         _c("div", { staticClass: "form-group" }, [
           _c("label", [_vm._v("Purchase Date")]),
@@ -54759,7 +54831,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: { type: "date" },
+            attrs: { type: "date", name: "purchase_date" },
             domProps: { value: _vm.purchase_date },
             on: {
               input: function($event) {
@@ -54775,7 +54847,7 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "col-md-4" }, [
         _c("div", { staticClass: "form-group" }, [
-          _c("label", [_vm._v("End Date")]),
+          _c("label", [_vm._v("End of Life")]),
           _vm._v(" "),
           _c("input", {
             directives: [
@@ -54787,7 +54859,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: { type: "date" },
+            attrs: { type: "date", name: "end_of_life" },
             domProps: { value: _vm.lifetime_end_date },
             on: {
               input: function($event) {
@@ -54827,7 +54899,7 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "number", step: "0.01" },
+        attrs: { type: "number", step: "0.01", name: "purchase_cost" },
         domProps: { value: _vm.cost },
         on: {
           input: function($event) {
@@ -54855,7 +54927,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: { type: "number", step: "0.01" },
+            attrs: { type: "number", step: "0.01", name: "current_value" },
             domProps: { value: _vm.costs.value },
             on: {
               input: function($event) {
@@ -54875,7 +54947,12 @@ var render = function() {
           _vm._v(" "),
           _c("input", {
             staticClass: "form-control",
-            attrs: { type: "number", step: "0.01", disabled: "" },
+            attrs: {
+              type: "number",
+              step: "0.01",
+              name: "depreciation",
+              readonly: ""
+            },
             domProps: { value: _vm.getDepreciationCharges }
           })
         ])
@@ -54887,7 +54964,12 @@ var render = function() {
       _vm._v(" "),
       _c("input", {
         staticClass: "form-control",
-        attrs: { type: "number", step: "0.01", disabled: "" },
+        attrs: {
+          type: "number",
+          step: "0.01",
+          name: "net_book_value",
+          readonly: ""
+        },
         domProps: { value: _vm.getNetBookValue }
       })
     ])
