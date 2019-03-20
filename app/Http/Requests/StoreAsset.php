@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Asset;
 use App\Exceptions\UnauthorizedException;
+use App\Finance;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,10 +28,10 @@ class StoreAsset extends FormRequest
 	 *
 	 * @throws UnauthorizedException
 	 */
-    protected function failedAuthorization()
-    {
-        throw new UnauthorizedException();
-    }
+	protected function failedAuthorization()
+	{
+		throw new UnauthorizedException();
+	}
 
 	/**
 	 * Get the validation rules that apply to the request.
@@ -74,5 +75,46 @@ class StoreAsset extends FormRequest
 			'tag.unique' => 'This tag is taken by another asset. Please choose a unique tag',
 			'name.required' => 'Please give this asset a name',
 		];
+	}
+
+	/**
+	 * Persist the requested data.
+	 *
+	 * @return mixed
+	 */
+	public function persist()
+	{
+		$asset = Asset::create([
+			'school_id' => $this->school_id,
+			'category_id' => $this->category_id,
+			'type_id' => $this->type_id,
+			'name' => $this->name,
+			'tag' => $this->tag,
+			'serial_number' => $this->serial_number,
+			'make' => $this->make,
+			'model' => $this->model,
+			'processor' => $this->processor,
+			'memory' => $this->memory,
+			'storage' => $this->storage,
+			'operating_system' => $this->operating_system,
+			'warranty' => $this->warranty,
+			'notes' => $this->notes,
+		]);
+
+		if ($asset->wasRecentlyCreated) {
+			Finance::create([
+				'asset_id' => $asset->id,
+				'accounting_start' => $this->accounting_start,
+				'accounting_end' => $this->accounting_end,
+				'purchase_date' => $this->purchase_date,
+				'end_of_life' => $this->end_of_life,
+				'purchase_cost' => $this->purchase_cost,
+				'current_value' => $this->current_value,
+				'depreciation' => $this->depreciation,
+				'net_book_value' => $this->net_book_value,
+			]);
+		}
+
+		return $asset;
 	}
 }

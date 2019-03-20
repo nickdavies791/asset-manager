@@ -47,36 +47,7 @@ class AssetController extends Controller
 	 */
 	public function store(StoreAsset $request)
 	{
-		$asset = $this->asset->create([
-			'school_id' => $request->school_id,
-			'category_id' => $request->category_id,
-			'type_id' => $request->type_id,
-			'name' => $request->name,
-			'tag' => $request->tag,
-			'serial_number' => $request->serial_number,
-			'make' => $request->make,
-			'model' => $request->model,
-			'processor' => $request->processor,
-			'memory' => $request->memory,
-			'storage' => $request->storage,
-			'operating_system' => $request->operating_system,
-			'warranty' => $request->warranty,
-			'notes' => $request->notes,
-		]);
-
-		if ($asset->exists()) {
-			$this->finance->create([
-				'asset_id' => $asset->id,
-				'accounting_start' => $request->accounting_start,
-				'accounting_end' => $request->accounting_end,
-				'purchase_date' => $request->purchase_date,
-				'end_of_life' => $request->end_of_life,
-				'purchase_cost' => $request->purchase_cost,
-				'current_value' => $request->current_value,
-				'depreciation' => $request->depreciation,
-				'net_book_value' => $request->net_book_value,
-			]);
-		}
+		$asset = $request->persist();
 
 		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset created!');
 	}
