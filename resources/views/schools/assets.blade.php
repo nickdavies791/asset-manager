@@ -8,9 +8,22 @@
                 <div class="card-header">Assets</div>
 
                 <div class="card-body">
-                    @foreach($assets as $asset)
-                        <a href="{{ route('assets.show', ['id' => $asset->id]) }}">{{ $asset->name }}</a>
-                    @endforeach
+                    <table class="table">
+                        <thead>
+                            <th>Name</th>
+                            <th>Tag</th>
+                            <th>Serial</th>
+                        </thead>
+                        <tbody>
+                            @foreach($assets as $asset)
+                                <tr>
+                                    <td><a href="{{ route('assets.show', ['id' => $asset->id]) }}">{{ $asset->name }}</a></td>
+                                    <td>{{ $asset->tag }}</td>
+                                    <td>{{ $asset->serial_number }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
