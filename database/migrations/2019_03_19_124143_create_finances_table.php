@@ -26,6 +26,7 @@ class CreateFinancesTable extends Migration
 			$table->decimal('net_book_value', 10, 2)->required();
 			$table->date('transferred_at')->nullable();
 			$table->timestamps();
+			$table->softDeletes();
         });
 
         Schema::table('finances', function (Blueprint $table) {

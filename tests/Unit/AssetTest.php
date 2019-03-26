@@ -58,9 +58,9 @@ class AssetTest extends TestCase
 	}
 
 	/*
-	 * Test an existing asset can be destroyed
+	 * Test an asset can be soft deleted
 	 */
-	public function test_an_asset_can_be_destroyed()
+	public function test_an_asset_can_be_soft_deleted()
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
@@ -72,6 +72,25 @@ class AssetTest extends TestCase
 		]);
 
 		$asset->destroy($asset->id);
+
+		$this->assertSoftDeleted($asset);
+	}
+
+	/*
+	 * Test an existing asset can be permanently deleted
+	 */
+	public function test_an_asset_can_be_permanently_deleted()
+	{
+		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
+		$asset = factory(Asset::class)->create([
+			'school_id' => $school->id,
+			'tag' => '98765',
+			'name' => 'Test Asset Deleted'
+		]);
+
+		$asset->forceDelete($asset->id);
 
 		$this->assertDatabaseMissing('assets', [
 			'id' => $asset->id,

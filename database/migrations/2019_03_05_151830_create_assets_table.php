@@ -30,6 +30,7 @@ class CreateAssetsTable extends Migration
             $table->text('warranty')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('assets', function (Blueprint $table) {

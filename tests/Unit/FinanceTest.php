@@ -58,9 +58,9 @@ class FinanceTest extends TestCase
 	}
 
 	/*
-	 * Test a finance record can be destroyed
+	 * Test a finance record can be soft deleted
 	 */
-	public function test_a_finance_record_can_be_destroyed()
+	public function test_a_finance_record_can_be_soft_deleted()
 	{
 		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
@@ -69,6 +69,22 @@ class FinanceTest extends TestCase
 		$finance = factory(Finance::class)->create(['asset_id' => $asset->id]);
 
 		$finance->destroy($finance->id);
+
+		$this->assertSoftDeleted($finance);
+	}
+
+	/*
+	 * Test a finance record can be destroyed
+	 */
+	public function test_a_finance_record_can_be_permanently_deleted()
+	{
+		$school = factory(School::class)->create();
+		$category = factory(Category::class)->create();
+		$type = factory(Type::class)->create();
+		$asset = factory(Asset::class)->create();
+		$finance = factory(Finance::class)->create(['asset_id' => $asset->id]);
+
+		$finance->forceDelete($finance->id);
 
 		$this->assertDatabaseMissing('finances', [
 			'id' => $finance->id,

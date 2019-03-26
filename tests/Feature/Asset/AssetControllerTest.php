@@ -410,7 +410,7 @@ class AssetControllerTest extends TestCase
 		$user->schools()->attach($school->id);
 
 		$response = $this->actingAs($user)->delete(route('assets.update', ['id' => $asset->id]));
-		$this->assertDatabaseMissing('assets', ['id' => $asset->id, 'name' => 'My First Asset']);
+		$this->assertSoftDeleted($asset);
 		$response->assertRedirect('home');
 		$response->assertSessionHas('alert.success', 'Asset deleted!');
 	}
