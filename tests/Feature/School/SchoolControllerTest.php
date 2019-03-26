@@ -331,7 +331,7 @@ class SchoolControllerTest extends TestCase
 
 		$response = $this->actingAs($user)->delete(route('schools.destroy', ['id' => $school->id]));
 
-		$this->assertDatabaseMissing('schools', ['id' => 1, 'name' => 'Test School']);
+		$this->assertSoftDeleted($school);
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.success', 'School deleted!');
 	}

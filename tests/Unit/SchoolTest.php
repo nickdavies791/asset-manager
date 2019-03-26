@@ -46,15 +46,29 @@ class SchoolTest extends TestCase
 	}
 
 	/*
-	 * Test a school can be destroyed
+	 * Test a school can be soft deleted
 	 */
-	public function test_a_school_can_be_destroyed()
+	public function test_a_school_can_be_soft_deleted()
 	{
 		$school = factory(School::class)->create([
 			'name' => 'Test School Deleted'
 		]);
 
 		$school->destroy($school->id);
+
+		$this->assertSoftDeleted($school);
+	}
+
+	/*
+	 * Test a school can be permanently deleted
+	 */
+	public function test_a_school_can_be_permanently_deleted()
+	{
+		$school = factory(School::class)->create([
+			'name' => 'Test School Deleted'
+		]);
+
+		$school->forceDelete($school->id);
 
 		$this->assertDatabaseMissing('schools', [
 			'id' => $school->id,
