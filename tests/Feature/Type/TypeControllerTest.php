@@ -148,7 +148,7 @@ class TypeControllerTest extends TestCase
 	/*
 	 * Test non admin users cannot access edit form to update types
 	 */
-	public function test_non_admin_users_cannot_access_edit_form_to_update_categories()
+	public function test_non_admin_users_cannot_access_edit_form_to_update_types()
 	{
 		$roleA = factory(Role::class)->create(['name' => 'Read Only']);
 		$roleB = factory(Role::class)->create(['name' => 'Contributor']);
