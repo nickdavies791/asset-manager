@@ -234,7 +234,7 @@ class AssetControllerTest extends TestCase
 		]);
 
 		$this->assertDatabaseHas('assets', ['tag' => 'ABC123']);
-		$this->assertDatabaseHas('finances', ['net_book_value' => '4921.80']);
+		$this->assertDatabaseHas('finances', ['net_book_value' => '492180']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 
 		$response = $this->actingAs($userB)->post(route('assets.store'), [
@@ -255,7 +255,7 @@ class AssetControllerTest extends TestCase
 		]);
 
 		$this->assertDatabaseHas('assets', ['tag' => 'CBA123']);
-		$this->assertDatabaseHas('finances', ['net_book_value' => '4921.80']);
+		$this->assertDatabaseHas('finances', ['net_book_value' => '492180']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 	}
 

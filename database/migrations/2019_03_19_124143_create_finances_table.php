@@ -20,10 +20,10 @@ class CreateFinancesTable extends Migration
             $table->date('accounting_end')->required();
             $table->date('purchase_date')->required();
             $table->date('end_of_life')->required();
-			$table->decimal('purchase_cost', 10, 2)->required();
-			$table->decimal('current_value', 10, 2)->required();
-			$table->decimal('depreciation', 10, 2)->required();
-			$table->decimal('net_book_value', 10, 2)->required();
+			$table->bigInteger('purchase_cost')->required();
+			$table->bigInteger('current_value')->required();
+			$table->bigInteger('depreciation')->required();
+			$table->bigInteger('net_book_value')->required();
 			$table->date('transferred_at')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
