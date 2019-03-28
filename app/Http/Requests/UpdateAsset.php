@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Asset;
 use App\Exceptions\UnauthorizedException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -72,5 +73,31 @@ class UpdateAsset extends FormRequest
 			'tag.unique' => 'This tag is taken by another asset. Please choose a unique tag',
 			'name.required' => 'Please give this asset a name',
 		];
+	}
+
+	/**
+	 * Persist the requested data.
+	 *
+	 * @param Asset $asset
+	 * @return mixed
+	 */
+	public function persist(Asset $asset)
+	{
+		return tap($asset)->update([
+			'school_id' => $this->school_id,
+			'category_id' => $this->category_id,
+			'type_id' => $this->type_id,
+			'tag' => $this->tag,
+			'name' => $this->name,
+			'serial_number' => $this->serial_number,
+			'make' => $this->make,
+			'model' => $this->model,
+			'processor' => $this->processor,
+			'memory' => $this->memory,
+			'storage' => $this->storage,
+			'operating_system' => $this->operating_system,
+			'warranty' => $this->warranty,
+			'notes' => $this->notes,
+		]);
 	}
 }

@@ -95,22 +95,7 @@ class AssetController extends Controller
 	 */
 	public function update(UpdateAsset $request, Asset $asset)
 	{
-		$asset->update([
-			'school_id' => $request->school_id,
-			'category_id' => $request->category_id,
-			'type_id' => $request->type_id,
-			'tag' => $request->tag,
-			'name' => $request->name,
-			'serial_number' => $request->serial_number,
-			'make' => $request->make,
-			'model' => $request->model,
-			'processor' => $request->processor,
-			'memory' => $request->memory,
-			'storage' => $request->storage,
-			'operating_system' => $request->operating_system,
-			'warranty' => $request->warranty,
-			'notes' => $request->notes,
-		]);
+		$asset = $request->persist($asset);
 
 		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset updated!');
 	}
