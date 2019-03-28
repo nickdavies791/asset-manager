@@ -25,4 +25,6 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('types', 'TypeController')->except(['index', 'show']);
 	Route::resource('assets', 'AssetController')->except('index');
 	Route::get('schools/{school}/assets', 'SchoolAssetController@show')->name('schools.assets');
+	Route::get('assets/{asset}/finance/create', 'AssetFinanceController@create')->name('finances.create');
+	Route::post('assets/{asset}/finance/store', 'AssetFinanceController@store')->name('finances.store');
 });

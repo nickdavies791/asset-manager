@@ -51,6 +51,14 @@ class StoreAsset extends FormRequest
 				}),
 			],
 			'name' => 'required',
+			'accounting_start' => 'date',
+			'accounting_end' => 'date',
+			'purchase_date' => 'date',
+			'end_of_life' => 'date',
+			'purchase_cost' => 'numeric',
+			'current_value' => 'numeric',
+			'depreciation' => 'numeric',
+			'net_book_value' => 'numeric',
 		];
 	}
 
@@ -74,6 +82,14 @@ class StoreAsset extends FormRequest
 			'tag.required' => 'Please provide an asset tag for this asset',
 			'tag.unique' => 'This tag is taken by another asset. Please choose a unique tag',
 			'name.required' => 'Please give this asset a name',
+			'accounting_start.date' => 'The accounting start date is not in the correct format',
+			'accounting_end.date' => 'The accounting end date is not in the correct format',
+			'purchase_date.date' => 'The purchase date is not in the correct format',
+			'end_of_life.date' => 'The end of life date is not in the correct format',
+			'purchase_cost.numeric' => 'The purchase cost must be a number',
+			'current_value.numeric' => 'The current value must be a number',
+			'depreciation.numeric' => 'The depreciation value must be a number',
+			'net_book_value.numeric' => 'The net book value must be a number'
 		];
 	}
 
