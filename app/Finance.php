@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -32,6 +33,79 @@ class Finance extends Model
 	public function asset()
 	{
 		return $this->belongsTo(Asset::class);
+	}
+
+	/**
+	 * Gets the accounting start date in correct format.
+	 *
+	 * @return string
+	 */
+	public function getAccountingStartAttribute()
+	{
+		return Carbon::parse($this->attributes['accounting_start'])->format('Y-m-d');
+	}
+
+	/**
+	 * Gets the accounting end date in correct format.
+	 *
+	 * @return string
+	 */
+	public function getAccountingEndAttribute()
+	{
+		return Carbon::parse($this->attributes['accounting_end'])->format('Y-m-d');
+	}
+
+	/**
+	 *
+	 * Gets the accounting start year.
+	 * @return string
+	 */
+	public function getAccountingStartYearAttribute()
+	{
+		return Carbon::parse($this->attributes['accounting_start'])->format('Y');
+	}
+
+	/**
+	 * Gets the accounting end year.
+	 *
+	 * @return string
+	 */
+	public function getAccountingEndYearAttribute()
+	{
+		return Carbon::parse($this->attributes['accounting_end'])->format('Y');
+	}
+
+	/**
+	 * Gets the accounting start and end years and formats appropriately.
+	 *
+	 * @return string
+	 */
+	public function getAccountingYearAttribute()
+	{
+		$start = Carbon::parse($this->attributes['accounting_start'])->format('Y');
+		$end = Carbon::parse($this->attributes['accounting_end'])->format('Y');
+
+		return $start . '-' . $end;
+	}
+
+	/**
+	 * Gets the purchase date in correct format.
+	 *
+	 * @return string
+	 */
+	public function getPurchaseDateAttribute()
+	{
+		return Carbon::parse($this->attributes['purchase_date'])->format('Y-m-d');
+	}
+
+	/**
+	 * Gets the end of life attribute in correct format.
+	 *
+	 * @return string
+	 */
+	public function getEndOfLifeAttribute()
+	{
+		return Carbon::parse($this->attributes['end_of_life'])->format('Y-m-d');
 	}
 
 	/**
