@@ -100,22 +100,11 @@ class StoreAsset extends FormRequest
 	 */
 	public function persist()
 	{
-		$asset = Asset::create([
-			'school_id' => $this->school_id,
-			'category_id' => $this->category_id,
-			'type_id' => $this->type_id,
-			'name' => $this->name,
-			'tag' => $this->tag,
-			'serial_number' => $this->serial_number,
-			'make' => $this->make,
-			'model' => $this->model,
-			'processor' => $this->processor,
-			'memory' => $this->memory,
-			'storage' => $this->storage,
-			'operating_system' => $this->operating_system,
-			'warranty' => $this->warranty,
-			'notes' => $this->notes,
-		]);
+		$asset = Asset::create($this->only([
+			'school_id', 'category_id', 'type_id', 'name', 'tag', 'serial_number',
+			'make', 'model', 'processor', 'memory', 'storage', 'operating_system',
+			'warranty', 'notes'
+		]));
 
 		if ($asset->wasRecentlyCreated) {
 			Finance::create([

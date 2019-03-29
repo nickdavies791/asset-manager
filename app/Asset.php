@@ -10,13 +10,11 @@ class Asset extends Model
 	use SoftDeletes;
 
 	/**
-	 * The attributes that are mass assignable.
+	 * The attributes that are not mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'school_id', 'category_id', 'type_id', 'name', 'tag', 'serial_number', 'make', 'model', 'processor', 'memory', 'storage', 'operating_system', 'warranty', 'notes'
-	];
+	protected $guarded = ['id'];
 
 	/**
 	 * Disable all timestamp fields.
