@@ -55,9 +55,7 @@ class SchoolController extends Controller
 	 */
 	public function store(StoreSchool $request)
 	{
-		$school = $this->school->create([
-			'name' => $request->name
-		]);
+		$school = $this->school->create($request->only('name'));
 		auth()->user()->schools()->attach($school);
 
 		return redirect()->route('schools.show', ['id' => $school->id])->with('alert.success', 'School created!');
