@@ -53,4 +53,26 @@ class AssetFinanceController extends Controller
 
 		return redirect()->route('assets.show', ['id' => $finance->asset_id])->with('alert.success', 'Finance created!');
 	}
+
+	/**
+	 * Returns the form to update a finance record
+	 *
+	 * @param Finance $finance
+	 * @return \Illuminate\View\View
+	 * @throws UnauthorizedException
+	 */
+	public function edit(Finance $finance)
+	{
+		if (auth()->user()->cannot('update', $finance->asset)) {
+			throw new UnauthorizedException();
+		}
+		$finance = $this->finance->find($finance->id);
+
+		 return view('finances.edit')->with('finance', $finance);
+	}
+
+	public function update(Request $request, Finance $finance)
+	{
+		// TODO: Update; Pass existing data to Vue component
+	}
 }
