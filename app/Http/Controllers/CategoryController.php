@@ -74,8 +74,7 @@ class CategoryController extends Controller
 	 */
 	public function update(UpdateCategory $request, Category $category)
     {
-        $category->name = $request->name;
-        $category->save();
+    	$category->update($request->only('name'));
 
         return redirect('home')->with('alert.success', 'Category updated!');
     }
