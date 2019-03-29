@@ -104,8 +104,7 @@ class SchoolController extends Controller
 	 */
 	public function update(UpdateSchool $request, School $school)
 	{
-		$school->name = $request->name;
-		$school->save();
+		$school->update($request->only('name'));
 
 		return redirect()->route('schools.show', ['id' => $school->id])->with('alert.success', 'School updated!');
 	}
