@@ -43,9 +43,7 @@ class CategoryController extends Controller
 	 */
 	public function store(StoreCategory $request)
     {
-		$this->category->create([
-			'name' => $request->name
-		]);
+		$this->category->create($request->only('name'));
 
 		return redirect('home')->with('alert.success', 'Category created!');
     }
