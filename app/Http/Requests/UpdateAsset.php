@@ -83,21 +83,6 @@ class UpdateAsset extends FormRequest
 	 */
 	public function persist(Asset $asset)
 	{
-		return tap($asset)->update([
-			'school_id' => $this->school_id,
-			'category_id' => $this->category_id,
-			'type_id' => $this->type_id,
-			'tag' => $this->tag,
-			'name' => $this->name,
-			'serial_number' => $this->serial_number,
-			'make' => $this->make,
-			'model' => $this->model,
-			'processor' => $this->processor,
-			'memory' => $this->memory,
-			'storage' => $this->storage,
-			'operating_system' => $this->operating_system,
-			'warranty' => $this->warranty,
-			'notes' => $this->notes,
-		]);
+		return tap($asset)->update($this->all());
 	}
 }
