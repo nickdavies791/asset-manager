@@ -7,13 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Type extends Model
 {
 	/**
-	 * The attributes that are mass assignable.
+	 * The attributes that are not mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'name'
-	];
+	protected $guarded = ['id'];
 
 	/**
 	 * Disable all timestamp fields.

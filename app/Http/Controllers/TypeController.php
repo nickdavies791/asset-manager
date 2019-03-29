@@ -43,9 +43,7 @@ class TypeController extends Controller
 	 */
 	public function store(StoreType $request)
 	{
-		$this->type->create([
-			'name' => $request->name
-		]);
+		$this->type->create($request->only('name'));
 
 		return redirect('home')->with('alert.success', 'Type created!');
 	}
