@@ -16,12 +16,6 @@ class Finance extends Model
 	 */
 	protected $guarded = ['id'];
 
-	/**
-	 * Disable all timestamp fields.
-	 * @var boolean
-	 */
-	public $timestamps = false;
-
 	/*
 	 * Returns the asset associated with a finance record
 	 */

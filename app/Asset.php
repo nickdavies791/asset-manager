@@ -17,12 +17,6 @@ class Asset extends Model
 	protected $guarded = ['id'];
 
 	/**
-	 * Disable all timestamp fields.
-	 * @var boolean
-	 */
-	public $timestamps = false;
-
-	/**
 	 * Returns the school associated with an asset
 	 */
 	public function school()
