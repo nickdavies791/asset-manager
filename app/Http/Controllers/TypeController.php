@@ -74,8 +74,7 @@ class TypeController extends Controller
 	 */
 	public function update(UpdateType $request, Type $type)
 	{
-		$type->name = $request->name;
-		$type->save();
+		$type->update($request->only('name'));
 
 		return redirect('home')->with('alert.success', 'Type updated!');
 	}
