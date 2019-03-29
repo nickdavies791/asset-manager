@@ -16,6 +16,16 @@ class Finance extends Model
 	 */
 	protected $guarded = ['id'];
 
+	/**
+	 * The attributes that are dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'accounting_start', 'accounting_end',
+		'purchase_date', 'end_of_life', 'transferred_at'
+	];
+
 	/*
 	 * Returns the asset associated with a finance record
 	 */
