@@ -10,13 +10,11 @@ class Finance extends Model
 	use SoftDeletes;
 
 	/**
-	 * The attributes that are mass assignable.
+	 * The attributes that are not mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = [
-		'asset_id', 'accounting_start', 'accounting_end', 'purchase_date', 'end_of_life', 'purchase_cost', 'current_value', 'depreciation', 'net_book_value', 'transferred_at'
-	];
+	protected $guarded = ['id'];
 
 	/**
 	 * Disable all timestamp fields.

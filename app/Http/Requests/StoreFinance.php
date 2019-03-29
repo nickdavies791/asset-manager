@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Asset;
 use App\Exceptions\UnauthorizedException;
 use App\Finance;
 use Illuminate\Foundation\Http\FormRequest;
@@ -75,22 +74,11 @@ class StoreFinance extends FormRequest
 	/**
 	 * Persist the requested data.
 	 *
-	 * @param Asset $asset
 	 * @return mixed
 	 */
-    public function persist(Asset $asset)
+    public function persist()
 	{
-		$finance = Finance::create([
-            'asset_id' => $asset->id,
-			'accounting_start' => $this->accounting_start,
-			'accounting_end' => $this->accounting_end,
-			'purchase_date' => $this->purchase_date,
-			'end_of_life' => $this->end_of_life,
-			'purchase_cost' => $this->purchase_cost,
-			'current_value' => $this->current_value,
-			'depreciation' => $this->depreciation,
-			'net_book_value' => $this->net_book_value,
-		]);
+		$finance = Finance::create($this->all());
 
 		return $finance;
 	}

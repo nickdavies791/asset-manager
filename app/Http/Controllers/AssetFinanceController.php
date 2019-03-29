@@ -49,7 +49,7 @@ class AssetFinanceController extends Controller
 	 */
 	public function store(StoreFinance $request, Asset $asset)
 	{
-		$finance = $request->persist($asset);
+		$finance = $request->persist();
 
 		return redirect()->route('assets.show', ['id' => $finance->asset_id])->with('alert.success', 'Finance created!');
 	}
