@@ -62,6 +62,8 @@
     let moment = require('moment');
 
     export default {
+        props: ['old'],
+
         data() {
             return {
                 cost: 0,
@@ -75,6 +77,18 @@
                 deprec: {
                     charges: 0,
                 }
+            }
+        },
+
+        created() {
+            if (this.old) {
+                this.cost = this.old.purchase_cost;
+                this.account_start = this.old.accounting_start;
+                this.account_end = this.old.accounting_end;
+                this.purchase_date = this.old.purchase_date;
+                this.lifetime_end_date = this.old.end_of_life;
+                this.costs.value = this.old.current_value;
+                this.deprec.charges = this.old.depreciation;
             }
         },
 

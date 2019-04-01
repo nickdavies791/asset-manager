@@ -1885,6 +1885,7 @@ __webpack_require__.r(__webpack_exports__);
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['old'],
   data: function data() {
     return {
       cost: 0,
@@ -1899,6 +1900,19 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         charges: 0
       }
     };
+  },
+  created: function created() {
+    console.log(this.old);
+
+    if (this.old) {
+      this.cost = this.old.purchase_cost;
+      this.account_start = this.old.accounting_start;
+      this.account_end = this.old.accounting_end;
+      this.purchase_date = this.old.purchase_date;
+      this.lifetime_end_date = this.old.end_of_life;
+      this.costs.value = this.old.current_value;
+      this.deprec.charges = this.old.depreciation;
+    }
   },
   methods: {
     round: function round(x) {
