@@ -47,4 +47,12 @@ class Asset extends Model
 	{
 		return $this->hasMany(Finance::class);
 	}
+
+	/**
+	 * Returns the latest finance record for given asset
+	 */
+	public function latestFinanceRecord()
+	{
+		return $this->finances()->latest()->first();
+	}
 }
