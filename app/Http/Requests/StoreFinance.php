@@ -39,7 +39,7 @@ class StoreFinance extends FormRequest
     {
         return [
 			'asset_id' => 'required|exists:assets,id',
-			'accounting_start' => 'date',
+			'accounting_start' => 'date|before:end_of_life',
 			'accounting_end' => 'date',
 			'purchase_date' => 'date',
 			'end_of_life' => 'date',
@@ -61,6 +61,7 @@ class StoreFinance extends FormRequest
 			'asset_id.required' => 'An asset was not provided',
 			'asset_id.exists' => 'The asset provided does not exist',
 			'accounting_start.date' => 'The accounting start date is not in the correct format',
+			'accounting_start.before' => 'This asset has already depreciated to the end of its life',
 			'accounting_end.date' => 'The accounting end date is not in the correct format',
 			'purchase_date.date' => 'The purchase date is not in the correct format',
 			'end_of_life.date' => 'The end of life date is not in the correct format',
