@@ -83,11 +83,12 @@
         created() {
             if (this.old) {
                 this.cost = this.old.purchase_cost;
-                this.account_start = this.getAccountingStart;
-                this.account_end = this.getAccountingEnd;
+                this.account_start = this.old.accounting_start;
+                this.account_end = this.old.accounting_end;
                 this.purchase_date = this.old.purchase_date;
                 this.lifetime_end_date = this.old.end_of_life;
-                this.costs.value = this.old.net_book_value;
+                this.costs.value = this.old.current_value;
+                this.deprec.charges = this.old.depreciation;
             }
         },
 
@@ -112,20 +113,6 @@
 
             getDepreciationCharges() {
                 return this.deprec.charges = this.round(((this.costs.value * this.getPercentage) / 12) * this.getAccountingMonths);
-            },
-
-            getAccountingStart()
-            {
-                let start = moment(this.old.accounting_start).add(1, 'years').format('YYYY-MM-DD');
-
-                return this.account_start = start;
-            },
-
-            getAccountingEnd()
-            {
-                let end = moment(this.old.accounting_end).add(1, 'years').format('YYYY-MM-DD');
-
-                return this.account_end = end;
             },
 
             getAccountingMonths() {

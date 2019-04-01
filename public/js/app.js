@@ -1902,16 +1902,13 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     };
   },
   created: function created() {
-    console.log(this.old);
-
     if (this.old) {
       this.cost = this.old.purchase_cost;
-      this.account_start = this.old.accounting_start;
-      this.account_end = this.old.accounting_end;
+      this.account_start = this.getAccountingStart;
+      this.account_end = this.getAccountingEnd;
       this.purchase_date = this.old.purchase_date;
       this.lifetime_end_date = this.old.end_of_life;
-      this.costs.value = this.old.current_value;
-      this.deprec.charges = this.old.depreciation;
+      this.costs.value = this.old.net_book_value;
     }
   },
   methods: {
@@ -1931,6 +1928,14 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     },
     getDepreciationCharges: function getDepreciationCharges() {
       return this.deprec.charges = this.round(this.costs.value * this.getPercentage / 12 * this.getAccountingMonths);
+    },
+    getAccountingStart: function getAccountingStart() {
+      var start = moment(this.old.accounting_start).add(1, 'years').format('YYYY-MM-DD');
+      return this.account_start = start;
+    },
+    getAccountingEnd: function getAccountingEnd() {
+      var end = moment(this.old.accounting_end).add(1, 'years').format('YYYY-MM-DD');
+      return this.account_end = end;
     },
     getAccountingMonths: function getAccountingMonths() {
       var start = moment(this.purchase_date);
@@ -2055,6 +2060,147 @@ __webpack_require__.r(__webpack_exports__);
     },
     typeChanged: function typeChanged() {
       Event.$emit('typeChanged', this.type);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UpdateAssetFinance.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/UpdateAssetFinance.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['old'],
+  data: function data() {
+    return {
+      cost: 0,
+      account_start: '2018-09-01',
+      account_end: '2019-09-01',
+      purchase_date: '2019-05-01',
+      lifetime_end_date: '2022-05-01',
+      costs: {
+        value: 0
+      },
+      deprec: {
+        charges: 0
+      }
+    };
+  },
+  created: function created() {
+    if (this.old) {
+      this.cost = this.old.purchase_cost;
+      this.account_start = this.old.accounting_start;
+      this.account_end = this.old.accounting_end;
+      this.purchase_date = this.old.purchase_date;
+      this.lifetime_end_date = this.old.end_of_life;
+      this.costs.value = this.old.current_value;
+      this.deprec.charges = this.old.depreciation;
+    }
+  },
+  methods: {
+    round: function round(x) {
+      return +(Math.round(x + "e+2") + "e-2");
+    }
+  },
+  computed: {
+    getYears: function getYears() {
+      var start = moment(this.purchase_date);
+      var end = moment(this.lifetime_end_date);
+      var years = end.diff(start, 'years');
+      return years;
+    },
+    getPercentage: function getPercentage() {
+      return this.round(1 / this.getYears);
+    },
+    getDepreciationCharges: function getDepreciationCharges() {
+      return this.deprec.charges = this.round(this.costs.value * this.getPercentage / 12 * this.getAccountingMonths);
+    },
+    getAccountingMonths: function getAccountingMonths() {
+      var start = moment(this.purchase_date);
+      var end = moment(this.account_end);
+
+      if (end.diff(start, 'months') >= 12) {
+        start = moment(this.account_start);
+      }
+
+      if (end.diff(moment(this.lifetime_end_date), 'months') <= 12 & end.diff(moment(this.lifetime_end_date), 'months') >= 0) {
+        end = moment(this.lifetime_end_date);
+      }
+
+      var months = end.diff(start, 'months');
+      return months;
+    },
+    getNetBookValue: function getNetBookValue() {
+      var nbv = parseFloat(this.costs.value) - parseFloat(this.deprec.charges);
+      return this.round(nbv);
     }
   }
 });
@@ -55125,6 +55271,246 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UpdateAssetFinance.vue?vue&type=template&id=2123e344&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/UpdateAssetFinance.vue?vue&type=template&id=2123e344& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Accounting Start")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.account_start,
+                expression: "account_start"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "date", name: "accounting_start" },
+            domProps: { value: _vm.account_start },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.account_start = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Accounting End")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.account_end,
+                expression: "account_end"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "date", name: "accounting_end" },
+            domProps: { value: _vm.account_end },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.account_end = $event.target.value
+              }
+            }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Purchase Date")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.purchase_date,
+                expression: "purchase_date"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "date", name: "purchase_date" },
+            domProps: { value: _vm.purchase_date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.purchase_date = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("End of Life")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.lifetime_end_date,
+                expression: "lifetime_end_date"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "date", name: "end_of_life" },
+            domProps: { value: _vm.lifetime_end_date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.lifetime_end_date = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Lifetime (Years)")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: { type: "number", step: "0.01", disabled: "" },
+            domProps: { value: _vm.getYears }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Purchase Cost")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.cost,
+            expression: "cost"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: { type: "number", step: "0.01", name: "purchase_cost" },
+        domProps: { value: _vm.cost },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.cost = $event.target.value
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Current Value")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.costs.value,
+                expression: "costs.value"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "number", step: "0.01", name: "current_value" },
+            domProps: { value: _vm.costs.value },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.costs, "value", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Charges")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: {
+              type: "number",
+              step: "0.01",
+              name: "depreciation",
+              readonly: ""
+            },
+            domProps: { value: _vm.getDepreciationCharges }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Net Book Value")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "number",
+          step: "0.01",
+          name: "net_book_value",
+          readonly: ""
+        },
+        domProps: { value: _vm.getNetBookValue }
+      })
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
 /*!********************************************************************!*\
   !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -67273,6 +67659,7 @@ Vue.component('school-selector', __webpack_require__(/*! ./components/SchoolSele
 Vue.component('category-selector', __webpack_require__(/*! ./components/CategorySelector.vue */ "./resources/js/components/CategorySelector.vue").default);
 Vue.component('type-selector', __webpack_require__(/*! ./components/TypeSelector.vue */ "./resources/js/components/TypeSelector.vue").default);
 Vue.component('create-asset-finance', __webpack_require__(/*! ./components/CreateAssetFinance.vue */ "./resources/js/components/CreateAssetFinance.vue").default);
+Vue.component('update-asset-finance', __webpack_require__(/*! ./components/UpdateAssetFinance.vue */ "./resources/js/components/UpdateAssetFinance.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -67624,6 +68011,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TypeSelector_vue_vue_type_template_id_913d86b8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TypeSelector_vue_vue_type_template_id_913d86b8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/UpdateAssetFinance.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/UpdateAssetFinance.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UpdateAssetFinance_vue_vue_type_template_id_2123e344___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UpdateAssetFinance.vue?vue&type=template&id=2123e344& */ "./resources/js/components/UpdateAssetFinance.vue?vue&type=template&id=2123e344&");
+/* harmony import */ var _UpdateAssetFinance_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UpdateAssetFinance.vue?vue&type=script&lang=js& */ "./resources/js/components/UpdateAssetFinance.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UpdateAssetFinance_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UpdateAssetFinance_vue_vue_type_template_id_2123e344___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _UpdateAssetFinance_vue_vue_type_template_id_2123e344___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/UpdateAssetFinance.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/UpdateAssetFinance.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/UpdateAssetFinance.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateAssetFinance_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateAssetFinance.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UpdateAssetFinance.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateAssetFinance_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/UpdateAssetFinance.vue?vue&type=template&id=2123e344&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/UpdateAssetFinance.vue?vue&type=template&id=2123e344& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateAssetFinance_vue_vue_type_template_id_2123e344___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./UpdateAssetFinance.vue?vue&type=template&id=2123e344& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/UpdateAssetFinance.vue?vue&type=template&id=2123e344&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateAssetFinance_vue_vue_type_template_id_2123e344___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateAssetFinance_vue_vue_type_template_id_2123e344___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

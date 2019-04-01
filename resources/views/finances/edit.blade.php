@@ -11,7 +11,7 @@
                         <div class="card-header">Update {{ $finance->accounting_year }} Finance</div>
                         <div class="card-body">
                             @include('partials.errors.errors')
-                            <create-asset-finance :old="{{ $finance }}"></create-asset-finance>
+                            <update-asset-finance :old="{{ $finance }}"></update-asset-finance>
                             <button class="btn btn-primary" type="submit">Save Finance</button>
                         </div>
                     </div>

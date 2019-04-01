@@ -37,7 +37,7 @@ class AssetFinanceController extends Controller
 			throw new UnauthorizedException();
 		}
 
-		return view('finances.create');
+		return view('finances.create')->with('finance', $asset->latestFinanceRecord());
 	}
 
 	/**

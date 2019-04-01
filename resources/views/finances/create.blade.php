@@ -11,7 +11,7 @@
                         <div class="card-body">
                             @include('partials.errors.errors')
                             <input type="hidden" name="asset_id" value="{{ Request()->asset['id'] }}">
-                            <create-asset-finance></create-asset-finance>
+                            <create-asset-finance :old="{{ $finance }}"></create-asset-finance>
                             <button class="btn btn-primary" type="submit">Save Asset</button>
                         </div>
                     </div>

@@ -25,6 +25,7 @@ Vue.component('school-selector', require('./components/SchoolSelector.vue').defa
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
 Vue.component('type-selector', require('./components/TypeSelector.vue').default);
 Vue.component('create-asset-finance', require('./components/CreateAssetFinance.vue').default);
+Vue.component('update-asset-finance', require('./components/UpdateAssetFinance.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
