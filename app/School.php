@@ -7,34 +7,34 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class School extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	/**
-	 * The attributes that are not mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $guarded = ['id'];
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
 
-	/**
-	 * Disable all timestamp fields.
-	 * @var boolean
-	 */
-	public $timestamps = false;
+    /**
+     * Disable all timestamp fields.
+     * @var boolean
+     */
+    public $timestamps = false;
 
-	/**
-	 * Returns the users associated with a school
-	 */
-	public function users()
-	{
-		return $this->belongsToMany(User::class);
-	}
+    /**
+     * Returns the users associated with a school
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 
-	/**
-	 * Returns the assets associated with a school
-	 */
-	public function assets()
-	{
-		return $this->hasMany(Asset::class);
-	}
+    /**
+     * Returns the assets associated with a school
+     */
+    public function assets()
+    {
+        return $this->hasMany(Asset::class);
+    }
 }

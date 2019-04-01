@@ -7,23 +7,23 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSchool extends FormRequest
 {
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
     public function authorize()
     {
-    	return $this->user()->can('update', $this->school);
+        return $this->user()->can('update', $this->school);
     }
 
-	/**
-	 * Handle a failed authorization attempt.
-	 *
-	 * @return void
-	 *
-	 * @throws UnauthorizedException
-	 */
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     *
+     * @throws UnauthorizedException
+     */
     protected function failedAuthorization()
     {
         throw new UnauthorizedException();
@@ -47,9 +47,9 @@ class UpdateSchool extends FormRequest
      * @return array
      */
     public function messages()
-	{
-		return [
-			'name.required' => 'Please enter a name for the school',
-		];
-	}
+    {
+        return [
+            'name.required' => 'Please enter a name for the school',
+        ];
+    }
 }

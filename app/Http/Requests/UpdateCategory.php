@@ -14,16 +14,16 @@ class UpdateCategory extends FormRequest
      */
     public function authorize()
     {
-    	return $this->user()->can('update', $this->category);
+        return $this->user()->can('update', $this->category);
     }
 
-	/**
-	 * Handle a failed authorization attempt.
-	 *
-	 * @return void
-	 *
-	 * @throws UnauthorizedException
-	 */
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     *
+     * @throws UnauthorizedException
+     */
     protected function failedAuthorization()
     {
         throw new UnauthorizedException();
@@ -47,10 +47,10 @@ class UpdateCategory extends FormRequest
      * @return array
      */
     public function messages()
-	{
-		return [
-			'name.required' => 'Please enter a name for the category',
-			'name.unique' => 'A category with this name already exists'
-		];
-	}
+    {
+        return [
+            'name.required' => 'Please enter a name for the category',
+            'name.unique' => 'A category with this name already exists'
+        ];
+    }
 }
