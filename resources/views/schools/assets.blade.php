@@ -12,14 +12,16 @@
                         <thead>
                             <th>Name</th>
                             <th>Tag</th>
-                            <th>Serial</th>
+                            <th>Type</th>
+                            <th>Category</th>
                         </thead>
                         <tbody>
                             @foreach($assets as $asset)
                                 <tr>
                                     <td><a href="{{ route('assets.show', ['id' => $asset->id]) }}">{{ $asset->name }}</a></td>
                                     <td>{{ $asset->tag }}</td>
-                                    <td>{{ $asset->serial_number }}</td>
+                                    <td>{{ $asset->type->name }}</td>
+                                    <td>{{ $asset->category->name }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

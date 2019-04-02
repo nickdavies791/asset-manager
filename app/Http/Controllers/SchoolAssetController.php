@@ -35,8 +35,7 @@ class SchoolAssetController extends Controller
             throw new UnauthorizedException();
         }
         $school = $this->school->findOrFail($school->id);
-        $assets = $school->assets;
 
-        return view('schools.assets')->with('assets', $assets);
+        return view('schools.assets')->with('assets', $school->assetsWithRelationships()->get());
     }
 }

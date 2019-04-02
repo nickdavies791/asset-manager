@@ -37,4 +37,12 @@ class School extends Model
     {
         return $this->hasMany(Asset::class);
     }
+
+    /**
+     * Eager load the following relationships for a schools assets
+     */
+    public function assetsWithRelationships()
+    {
+        return $this->assets()->with(['category', 'type', 'finances']);
+    }
 }
