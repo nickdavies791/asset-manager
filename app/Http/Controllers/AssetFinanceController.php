@@ -10,11 +10,23 @@ use Illuminate\Http\Request;
 
 class AssetFinanceController extends Controller
 {
+    /**
+     * The Asset model instance.
+     *
+     * @var Asset $asset
+     */
     protected $asset;
+
+    /**
+     * The Finance model instance.
+     *
+     * @var Finance $finance
+     */
     protected $finance;
 
     /**
      * AssetFinanceController constructor.
+     *
      * @param Asset $asset
      * @param Finance $finance
      */

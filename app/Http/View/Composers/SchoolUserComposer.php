@@ -7,10 +7,16 @@ use Illuminate\View\View;
 
 class SchoolUserComposer
 {
+    /**
+     * The School model instance.
+     *
+     * @var School $school
+     */
     protected $school;
 
     /**
      * SchoolUserComposer constructor.
+     *
      * @param School $school
      */
     public function __construct(School $school)

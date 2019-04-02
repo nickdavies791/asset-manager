@@ -9,10 +9,16 @@ use App\Type;
 
 class TypeController extends Controller
 {
+    /**
+     * The Type model instance.
+     *
+     * @var Type $type
+     */
     protected $type;
 
     /**
      * TypeController constructor.
+     *
      * @param Type $type
      */
     public function __construct(Type $type)

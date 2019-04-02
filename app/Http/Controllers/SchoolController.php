@@ -9,10 +9,16 @@ use App\School;
 
 class SchoolController extends Controller
 {
+    /**
+     * The School model instance.
+     *
+     * @var School $school
+     */
     protected $school;
 
     /**
      * SchoolController constructor.
+     *
      * @param School $school
      */
     public function __construct(School $school)

@@ -9,10 +9,16 @@ use App\Http\Requests\UpdateCategory;
 
 class CategoryController extends Controller
 {
+    /**
+     * The Category model instance.
+     *
+     * @var Category $category
+     */
     protected $category;
 
     /**
      * CategoryController constructor.
+     *
      * @param Category $category
      */
     public function __construct(Category $category)

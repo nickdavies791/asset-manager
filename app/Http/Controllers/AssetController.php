@@ -10,11 +10,23 @@ use App\Http\Requests\UpdateAsset;
 
 class AssetController extends Controller
 {
+    /**
+     * The Asset model instance.
+     *
+     * @var Asset $asset
+     */
     protected $asset;
+
+    /**
+     * The Finance model instance.
+     *
+     * @var Finance $finance
+     */
     protected $finance;
 
     /**
      * AssetController constructor.
+     *
      * @param Asset $asset
      * @param Finance $finance
      */

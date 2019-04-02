@@ -8,11 +8,23 @@ use App\School;
 
 class SchoolAssetController extends Controller
 {
+    /**
+     * The School model instance.
+     *
+     * @var School $school
+     */
     protected $school;
+
+    /**
+     * The Asset model instance.
+     *
+     * @var Asset $asset
+     */
     protected $asset;
 
     /**
      * SchoolAssetController constructor.
+     *
      * @param School $school
      * @param Asset $asset
      */
