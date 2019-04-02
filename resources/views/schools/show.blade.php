@@ -9,6 +9,7 @@
 
                 <div class="card-body">
                     <a class="btn btn-primary" href="{{ route('schools.assets', ['id' => $school->id]) }}">View Assets</a>
+                    <a class="btn btn-primary" href="{{ route('assets.create') }}">Add an Asset</a>
                 </div>
             </div>
         </div>
