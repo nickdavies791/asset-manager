@@ -51,7 +51,8 @@ class AssetFinanceController extends Controller
     {
         $finance = $request->persist();
 
-        return redirect()->route('assets.show', ['id' => $finance->asset_id])->with('alert.success', 'Finance created!');
+        return redirect()->route('assets.show', ['id' => $finance->asset_id])
+                         ->with('alert.success', 'Finance created!');
     }
 
     /**
