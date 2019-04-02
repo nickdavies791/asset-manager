@@ -76,7 +76,7 @@ class AssetController extends Controller
         if (auth()->user()->cannot('view', $asset)) {
             throw new UnauthorizedException();
         }
-        $asset = $this->asset->find($asset->id);
+        $asset = $this->asset->with(['finances'])->find($asset->id);
 
         return view('assets.show')->with('asset', $asset);
     }
