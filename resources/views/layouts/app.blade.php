@@ -24,7 +24,7 @@
         <main class="py-4">
             @yield('content')
         </main>
+            @include('partials.alerts.alert-growl')
     </div>
-    @include('partials.alerts.alert-growl')
 </body>
 </html>

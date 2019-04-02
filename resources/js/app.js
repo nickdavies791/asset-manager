@@ -26,6 +26,7 @@ Vue.component('category-selector', require('./components/CategorySelector.vue').
 Vue.component('type-selector', require('./components/TypeSelector.vue').default);
 Vue.component('create-asset-finance', require('./components/CreateAssetFinance.vue').default);
 Vue.component('update-asset-finance', require('./components/UpdateAssetFinance.vue').default);
+Vue.component('asset-created-notification', require('./components/Notifications/AssetCreatedNotification.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,6 +38,8 @@ const app = new Vue({
     el: '#app',
     data: {
         type: null,
+        alert: false,
+        users: [],
     },
     created() {
         Event.$on('typeChanged', newType => {

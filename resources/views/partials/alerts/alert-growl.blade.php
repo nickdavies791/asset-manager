@@ -43,3 +43,4 @@
         </button>
     </div>
 @endif
+<asset-created-notification></asset-created-notification>
