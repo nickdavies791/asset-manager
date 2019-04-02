@@ -20,20 +20,13 @@ class AssetCreated implements ShouldBroadcast
     public $user;
 
     /**
-     * The requested asset.
-     */
-    public $asset;
-
-    /**
      * Create a new event instance.
      *
      * @param User $user
-     * @param Asset $asset
      */
-    public function __construct(User $user, Asset $asset)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->asset = $asset;
 
         $this->dontBroadcastToCurrentUser();
     }

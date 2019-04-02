@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Asset;
-use App\Events\AssetCreated;
 use App\Exceptions\UnauthorizedException;
 use App\Finance;
 use App\Http\Requests\StoreAsset;
@@ -61,7 +60,6 @@ class AssetController extends Controller
     public function store(StoreAsset $request)
     {
         $asset = $request->persist();
-        event(new AssetCreated(auth()->user(), $asset));
 
         return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset created!');
     }
