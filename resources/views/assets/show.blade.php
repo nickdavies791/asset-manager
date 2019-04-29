@@ -30,9 +30,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <td>&pound; {{ $finance->current_value }}</td>
-                                <td>&pound; {{ $finance->depreciation }}</td>
-                                <td>&pound; {{ $finance->net_book_value }}</td>
+                                <td>&pound;{{ number_format($finance->current_value, 2) }}</td>
+                                <td>&pound;{{ number_format($finance->depreciation, 2) }}</td>
+                                <td>&pound;{{ number_format($finance->net_book_value, 2) }}</td>
                             </tbody>
                         </table>
                     @endforeach
