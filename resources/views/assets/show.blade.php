@@ -17,6 +17,9 @@
             <div class="card">
                 <div class="card-header">Finance Records</div>
                 <div class="card-body">
+                    <div class="card-subtitle mb-3">
+                        <a class="btn btn-sm btn-primary" href="{{ route('finances.create', $asset) }}">Add Record</a>
+                    </div>
                     @foreach($asset->finances as $finance)
                         <table class="table table-bordered mb-3">
                             <thead>
