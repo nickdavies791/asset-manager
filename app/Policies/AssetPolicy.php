@@ -22,8 +22,8 @@ class AssetPolicy
         $school = $asset->school;
 
         if ($user->can('view', $school)) {
-        	return $school->assets->contains($asset->id);
-		}
+            return $school->assets->contains($asset->id);
+        }
     }
 
     /**
@@ -49,8 +49,8 @@ class AssetPolicy
         $school = $asset->school;
 
         if ($user->can('view', $school) && ($user->isAdministrator() || $user->isContributor())) {
-        	return $school->assets->contains($asset->id);
-		}
+            return $school->assets->contains($asset->id);
+        }
     }
 
     /**

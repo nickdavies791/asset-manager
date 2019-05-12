@@ -91,11 +91,11 @@ class TypeControllerTest extends TestCase
 
 		$response = $this->actingAs($userA)->get(route('types.create'));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to create types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->get(route('types.create'));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to create types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -122,10 +122,12 @@ class TypeControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
 
 		$response = $this->actingAs($userA)->post(route('types.store'), ['name' => 'My First Asset Type']);
-		$response->assertStatus(403);
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->post(route('types.store'), ['name' => 'My Second Asset Type']);
-		$response->assertStatus(403);
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -146,7 +148,7 @@ class TypeControllerTest extends TestCase
 	/*
 	 * Test non admin users cannot access edit form to update types
 	 */
-	public function test_non_admin_users_cannot_access_edit_form_to_update_categories()
+	public function test_non_admin_users_cannot_access_edit_form_to_update_types()
 	{
 		$roleA = factory(Role::class)->create(['name' => 'Read Only']);
 		$roleB = factory(Role::class)->create(['name' => 'Contributor']);
@@ -156,11 +158,11 @@ class TypeControllerTest extends TestCase
 
 		$response = $this->actingAs($userA)->get(route('types.edit', ['id' => $type->id]));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to update types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->get(route('types.edit', ['id' => $type->id]));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to update types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -199,7 +201,7 @@ class TypeControllerTest extends TestCase
 		$this->assertDatabaseHas('types', ['name' => 'Test Asset Type']);
 		$this->assertDatabaseMissing('types', ['name' => 'An Updated Type']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to update types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->put(route('types.update', ['id' => $type->id]), [
 			'name' => 'An Updated Type'
@@ -207,7 +209,7 @@ class TypeControllerTest extends TestCase
 		$this->assertDatabaseHas('types', ['name' => 'Test Asset Type']);
 		$this->assertDatabaseMissing('types', ['name' => 'An Updated Type']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to update types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -242,11 +244,11 @@ class TypeControllerTest extends TestCase
 		$response = $this->actingAs($userA)->delete(route('types.destroy', ['id' => $type->id]));
 		$this->assertDatabaseHas('types', ['name' => 'Test Asset Type']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->delete(route('types.destroy', ['id' => $type->id]));
 		$this->assertDatabaseHas('types', ['name' => 'Test Asset Type']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete types');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 }

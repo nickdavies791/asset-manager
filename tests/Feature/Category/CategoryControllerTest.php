@@ -91,11 +91,11 @@ class CategoryControllerTest extends TestCase
 
 		$response = $this->actingAs($userA)->get(route('categories.create'));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to create categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->get(route('categories.create'));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to create categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -122,10 +122,12 @@ class CategoryControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
 
 		$response = $this->actingAs($userA)->post(route('categories.store'), ['name' => 'My First Category']);
-		$response->assertStatus(403);
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->post(route('categories.store'), ['name' => 'My Second Category']);
-		$response->assertStatus(403);
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -153,11 +155,11 @@ class CategoryControllerTest extends TestCase
 
 		$response = $this->actingAs($userA)->get(route('categories.edit', ['id' => $category->id]));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to update categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->get(route('categories.edit', ['id' => $category->id]));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to update categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -197,7 +199,7 @@ class CategoryControllerTest extends TestCase
 		$this->assertDatabaseHas('categories', ['name' => 'Test Category']);
 		$this->assertDatabaseMissing('categories', ['name' => 'An Updated Category Name']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to update categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->put(route('categories.update', ['id' => $category->id]), [
 			'name' => 'An Updated Category Name'
@@ -205,7 +207,7 @@ class CategoryControllerTest extends TestCase
 		$this->assertDatabaseHas('categories', ['name' => 'Test Category']);
 		$this->assertDatabaseMissing('categories', ['name' => 'An Updated Category Name']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to update categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -240,11 +242,11 @@ class CategoryControllerTest extends TestCase
 		$response = $this->actingAs($userA)->delete(route('categories.destroy', ['id' => $category->id]));
 		$this->assertDatabaseHas('categories', ['name' => 'Test Category']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->delete(route('categories.destroy', ['id' => $category->id]));
 		$this->assertDatabaseHas('categories', ['name' => 'Test Category']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete categories');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 }

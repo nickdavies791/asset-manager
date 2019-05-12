@@ -17,7 +17,6 @@ class CreateCategoryTypeTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('type_id');
-            $table->timestamps();
         });
 
         Schema::table('category_type', function (Blueprint $table) {

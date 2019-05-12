@@ -3,39 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Asset;
+use App\Exceptions\UnauthorizedException;
 use App\School;
-use Illuminate\Http\Request;
 
 class SchoolAssetController extends Controller
 {
-	protected $school;
-	protected $asset;
+    /**
+     * The School model instance.
+     *
+     * @var School $school
+     */
+    protected $school;
 
-	/**
-	 * SchoolAssetController constructor.
-	 * @param School $school
-	 * @param Asset $asset
-	 */
-	public function __construct(School $school, Asset $asset)
-	{
-		$this->school = $school;
-		$this->asset = $asset;
-	}
+    /**
+     * The Asset model instance.
+     *
+     * @var Asset $asset
+     */
+    protected $asset;
 
-	/**
-	 * Displays the assets for the specified school
-	 *
-	 * @param School $school
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-	 */
-	public function show(School $school)
-	{
-		if (auth()->user()->cannot('view', $school)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to view this school\'s assets');
-		}
-		$school = $this->school->findOrFail($school->id);
-		$assets = $school->assets;
+    /**
+     * SchoolAssetController constructor.
+     *
+     * @param School $school
+     * @param Asset $asset
+     */
+    public function __construct(School $school, Asset $asset)
+    {
+        $this->school = $school;
+        $this->asset = $asset;
+    }
 
-		return view('schools.assets')->with('assets', $assets);
-	}
+    /**
+     * Displays the assets for the specified school
+     *
+     * @param School $school
+     * @return \Illuminate\View\View
+     * @throws UnauthorizedException
+     */
+    public function show(School $school)
+    {
+        if (auth()->user()->cannot('view', $school)) {
+            throw new UnauthorizedException();
+        }
+        $school = $this->school->findOrFail($school->id);
+
+        return view('schools.assets')->with('assets', $school->assetsWithRelationships()->get());
+    }
 }

@@ -8,13 +8,9 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
+                    @can('create', App\Asset::class)
+                        <a class="btn btn-primary" href="{{ route('assets.create') }}">Add Asset</a>
+                    @endcan
                 </div>
             </div>
         </div>

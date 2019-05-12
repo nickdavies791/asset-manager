@@ -3,144 +3,129 @@
 namespace App\Http\Controllers;
 
 use App\Asset;
+use App\Exceptions\UnauthorizedException;
+use App\Finance;
 use App\Http\Requests\StoreAsset;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateAsset;
 
 class AssetController extends Controller
 {
-	protected $asset;
+    /**
+     * The Asset model instance.
+     *
+     * @var Asset $asset
+     */
+    protected $asset;
 
-	/**
-	 * AssetController constructor.
-	 * @param Asset $asset
-	 */
-	public function __construct(Asset $asset)
-	{
-		$this->asset = $asset;
-	}
+    /**
+     * The Finance model instance.
+     *
+     * @var Finance $finance
+     */
+    protected $finance;
 
-	/**
-	 * Returns the form to create new assets
-	 *
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
-	 */
-	public function create()
-	{
-		if (auth()->user()->cannot('create', $this->asset)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to create assets');
-		}
+    /**
+     * AssetController constructor.
+     *
+     * @param Asset $asset
+     * @param Finance $finance
+     */
+    public function __construct(Asset $asset, Finance $finance)
+    {
+        $this->asset = $asset;
+        $this->finance = $finance;
+    }
 
-		return view('assets.create');
-	}
+    /**
+     * Returns the form to create new assets
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws UnauthorizedException
+     */
+    public function create()
+    {
+        if (auth()->user()->cannot('create', $this->asset)) {
+            throw new UnauthorizedException();
+        }
 
-	/**
-	 * Stores a new asset
-	 *
-	 * @param StoreAsset $request
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-	 */
-	public function store(StoreAsset $request)
-	{
-		if (auth()->user()->cannot('create', $this->asset)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to create assets');
-		}
-		$asset = $this->asset->create([
-			'school_id' => $request->school_id,
-			'category_id' => $request->category_id,
-			'type_id' => $request->type_id,
-			'name' => $request->name,
-			'tag' => $request->tag,
-			'serial_number' => $request->serial_number,
-			'make' => $request->make,
-			'model' => $request->model,
-			'processor' => $request->processor,
-			'memory' => $request->memory,
-			'storage' => $request->storage,
-			'operating_system' => $request->operating_system,
-			'warranty' => $request->warranty,
-			'notes' => $request->notes,
-		]);
+        return view('assets.create');
+    }
 
-		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset created!');
-	}
+    /**
+     * Stores a new asset
+     *
+     * @param StoreAsset $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function store(StoreAsset $request)
+    {
+        $asset = $request->persist();
 
-	/**
-	 * Displays the specified asset if the user is authenticated
-	 *
-	 * @param Asset $asset
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
-	 */
-	public function show(Asset $asset)
-	{
-		if (auth()->user()->cannot('view', $asset)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to this asset');
-		}
-		$asset = $this->asset->find($asset->id);
+        return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset created!');
+    }
 
-		return view('assets.show')->with('asset', $asset);
-	}
+    /**
+     * Displays the specified asset if the user is authenticated
+     *
+     * @param Asset $asset
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws UnauthorizedException
+     */
+    public function show(Asset $asset)
+    {
+        if (auth()->user()->cannot('view', $asset)) {
+            throw new UnauthorizedException();
+        }
+        $asset = $this->asset->with(['finances'])->find($asset->id);
 
-	/**
-	 * Displays the edit form for updating assets
-	 *
-	 * @param Asset $asset
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
-	 */
-	public function edit(Asset $asset)
-	{
-		if (auth()->user()->cannot('update', $asset)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to update this asset');
-		}
-		$asset = $this->asset->find($asset->id);
+        return view('assets.show')->with('asset', $asset);
+    }
 
-		return view('assets.edit')->with('asset', $asset);
-	}
+    /**
+     * Displays the edit form for updating assets
+     *
+     * @param Asset $asset
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws UnauthorizedException
+     */
+    public function edit(Asset $asset)
+    {
+        if (auth()->user()->cannot('update', $asset)) {
+            throw new UnauthorizedException();
+        }
+        $asset = $this->asset->find($asset->id);
 
-	/**
-	 * Updates the specified asset in storage
-	 *
-	 * @param Request $request
-	 * @param Asset $asset
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-	 */
-	public function update(Request $request, Asset $asset)
-	{
-		if (auth()->user()->cannot('update', $asset)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to update assets');
-		}
-		$asset->update([
-			'school_id' => $request->school_id,
-			'category_id' => $request->category_id,
-			'type_id' => $request->type_id,
-			'tag' => $request->tag,
-			'name' => $request->name,
-			'serial_number' => $request->serial_number,
-			'make' => $request->make,
-			'model' => $request->model,
-			'processor' => $request->processor,
-			'memory' => $request->memory,
-			'storage' => $request->storage,
-			'operating_system' => $request->operating_system,
-			'warranty' => $request->warranty,
-			'notes' => $request->notes,
-		]);
+        return view('assets.edit')->with('asset', $asset);
+    }
 
-		return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset updated!');
-	}
+    /**
+     * Updates the specified asset in storage
+     *
+     * @param UpdateAsset $request
+     * @param Asset $asset
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(UpdateAsset $request, Asset $asset)
+    {
+        $asset = $request->persist($asset);
 
-	/**
-	 * Removes the specified asset from storage
-	 *
-	 * @param Asset $asset
-	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-	 */
-	public function destroy(Asset $asset)
-	{
-		if (auth()->user()->cannot('delete', $asset)) {
-			return redirect('home')->with('alert.danger', 'You do not have access to delete assets');
-		}
-		$this->asset->destroy($asset->id);
+        return redirect()->route('assets.show', ['id' => $asset->id])->with('alert.success', 'Asset updated!');
+    }
 
-		return redirect()->route('home')->with('alert.success', 'Asset deleted!');
-	}
+    /**
+     * Removes the specified asset from storage
+     *
+     * @param Asset $asset
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws UnauthorizedException
+     */
+    public function destroy(Asset $asset)
+    {
+        if (auth()->user()->cannot('delete', $asset)) {
+            throw new UnauthorizedException();
+        }
+        $this->asset->destroy($asset->id);
+
+        return redirect()->route('home')->with('alert.success', 'Asset deleted!');
+    }
 }

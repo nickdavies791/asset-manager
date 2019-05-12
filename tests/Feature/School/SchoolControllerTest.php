@@ -156,14 +156,14 @@ class SchoolControllerTest extends TestCase
 		$response->assertSeeText('Test School A');
 		$response->assertDontSeeText('Test School B');
 		$response = $this->actingAs($userA)->get(route('schools.show', ['id' => 2]));
-		$response->assertSessionHas('alert.danger', 'You do not have access to this school');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->get(route('schools.show', ['id' => 2]));
 		$response->assertViewIs('schools.show');
 		$response->assertSeeText('Test School B');
 		$response->assertDontSeeText('Test School A');
 		$response = $this->actingAs($userB)->get(route('schools.show', ['id' => 1]));
-		$response->assertSessionHas('alert.danger', 'You do not have access to this school');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -192,11 +192,11 @@ class SchoolControllerTest extends TestCase
 
 		$response = $this->actingAs($userA)->get(route('schools.create'));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->get(route('schools.create'));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to create schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -228,10 +228,12 @@ class SchoolControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $contributor->id]);
 
 		$response = $this->actingAs($userA)->post(route('schools.store', ['name' => 'A New School']));
-		$response->assertStatus(403);
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->post(route('schools.store', ['name' => 'A New School']));
-		$response->assertStatus(403);
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -263,11 +265,11 @@ class SchoolControllerTest extends TestCase
 
 		$response = $this->actingAs($userA)->get(route('schools.edit', ['id' => $school->id]));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->get(route('schools.edit', ['id' => $school->id]));
 		$response->assertRedirect(route('home'));
-		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -307,7 +309,7 @@ class SchoolControllerTest extends TestCase
 		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
 		$this->assertDatabaseMissing('schools', ['name' => 'An Updated School Name']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->put(route('schools.update', ['school' => $school->id]), [
 			'name' => 'An Updated School Name'
@@ -315,7 +317,7 @@ class SchoolControllerTest extends TestCase
 		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
 		$this->assertDatabaseMissing('schools', ['name' => 'An Updated School Name']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to update schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -329,7 +331,7 @@ class SchoolControllerTest extends TestCase
 
 		$response = $this->actingAs($user)->delete(route('schools.destroy', ['id' => $school->id]));
 
-		$this->assertDatabaseMissing('schools', ['id' => 1, 'name' => 'Test School']);
+		$this->assertSoftDeleted($school);
 		$response->assertStatus(302);
 		$response->assertSessionHas('alert.success', 'School deleted!');
 	}
@@ -350,11 +352,11 @@ class SchoolControllerTest extends TestCase
 		$response = $this->actingAs($userA)->delete(route('schools.destroy', ['school' => $school->id]));
 		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->delete(route('schools.destroy', ['school' => $school->id]));
 		$this->assertDatabaseHas('schools', ['name' => 'Test School']);
 		$response->assertStatus(302);
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete schools');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 }

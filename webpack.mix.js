@@ -11,5 +11,9 @@ const mix = require('laravel-mix');
  |
  */
 
+// Main app.js and app.scss files
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css');
+
+// FontAwesome JS
+mix.copy('node_modules/@fortawesome/fontawesome-free/js/all.min.js', 'public/js/fontawesome.js');

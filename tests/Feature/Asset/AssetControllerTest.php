@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Asset;
 use App\Category;
+use App\Finance;
 use App\Role;
 use App\School;
 use App\Type;
@@ -137,7 +138,7 @@ class AssetControllerTest extends TestCase
 		$response->assertSee('Test Asset School A');
 		$response = $this->actingAs($user)->get(route('schools.assets', ['id' => $schoolB->id]));
 		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to view this school\'s assets');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -162,7 +163,7 @@ class AssetControllerTest extends TestCase
 		$response->assertSee('Test Asset School A');
 		$response = $this->actingAs($user)->get(route('assets.show', ['id' => $assetB->id]));
 		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to this asset');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -194,7 +195,7 @@ class AssetControllerTest extends TestCase
 
 		$response = $this->actingAs($user)->get(route('assets.create'));
 		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to create assets');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -211,28 +212,50 @@ class AssetControllerTest extends TestCase
 		$userB = factory(User::class)->create(['role_id' => $roleB->id]);
 
 		$userA->schools()->attach($school->id);
-		$asset = factory(Asset::class)->create();
+		$userB->schools()->attach($school->id);
 
-		$response = $this->actingAs($userA)->post(route('assets.store'), $asset->toArray());
+		$asset = factory(Asset::class)->make();
 
-		$this->assertDatabaseHas('assets', [
-			'id' => $asset->id,
+		$response = $this->actingAs($userA)->post(route('assets.store'), [
+			'school_id' => $asset->school_id,
 			'category_id' => $asset->category_id,
 			'type_id' => $asset->type_id,
-			'school_id' => $school->id,
 			'name' => $asset->name,
-			'tag' => $asset->tag,
+			'tag' => 'ABC123',
+			'asset_id' => $asset->id,
+			'accounting_start' => '2019-01-01',
+			'accounting_end' => '2020-01-01',
+			'purchase_date' => '2019-05-05',
+			'end_of_life' => '2022-05-05',
+			'purchase_cost' => '5425.93',
+			'current_value' => '5425.93',
+			'depreciation' => '1790.56',
+			'net_book_value' => '4921.80'
 		]);
+
+		$this->assertDatabaseHas('assets', ['tag' => 'ABC123']);
+		$this->assertDatabaseHas('finances', ['net_book_value' => '492180']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 
 		$response = $this->actingAs($userB)->post(route('assets.store'), [
-			'school_id' => $school->id,
+			'school_id' => $asset->school_id,
 			'category_id' => $asset->category_id,
 			'type_id' => $asset->type_id,
-			'name' => 'My Second Test Asset',
-			'tag' => '97531'
+			'name' => $asset->name,
+			'tag' => 'CBA123',
+			'asset_id' => $asset->id,
+			'accounting_start' => '2019-01-01',
+			'accounting_end' => '2020-01-01',
+			'purchase_date' => '2019-05-05',
+			'end_of_life' => '2022-05-05',
+			'purchase_cost' => '5425.93',
+			'current_value' => '5425.93',
+			'depreciation' => '1790.56',
+			'net_book_value' => '4921.80'
 		]);
-		$this->assertDatabaseHas('assets', ['name' => 'My Second Test Asset', 'tag' => '97531']);
+
+		$this->assertDatabaseHas('assets', ['tag' => 'CBA123']);
+		$this->assertDatabaseHas('finances', ['net_book_value' => '492180']);
 		$response->assertSessionHas('alert.success', 'Asset created!');
 	}
 
@@ -249,9 +272,16 @@ class AssetControllerTest extends TestCase
 
 		$user->schools()->attach($school->id);
 
-		$response = $this->actingAs($user)->post(route('assets.store'), ['school_id' => $school->id, 'name' => 'My Test Asset', 'tag' => '13579']);
+		$response = $this->actingAs($user)->post(route('assets.store'), [
+			'school_id' => $school->id,
+			'category_id' => $category->id,
+			'type_id' => $type->id,
+			'name' => 'My Test Asset',
+			'tag' => '13579'
+		]);
 		$this->assertDatabaseMissing('assets', ['name' => 'My Test Asset', 'tag' => '13579']);
-		$response->assertStatus(403);
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -298,7 +328,7 @@ class AssetControllerTest extends TestCase
 
 		$response = $this->actingAs($user)->get(route('assets.edit', ['id' => $asset->id]));
 		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to update this asset');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -306,10 +336,10 @@ class AssetControllerTest extends TestCase
 	 */
 	public function test_a_user_can_update_assets_if_contributor_or_admin()
 	{
-
-		$school = factory(School::class)->create(['id' => 1, 'name' => 'Test School']);
+		$school = factory(School::class)->create();
 		$category = factory(Category::class)->create();
 		$type = factory(Type::class)->create();
+
 		$roleA = factory(Role::class)->create(['name' => 'Contributor']);
 		$roleB = factory(Role::class)->create(['name' => 'Administrator']);
 		$userA = factory(User::class)->create(['role_id' => $roleA->id]);
@@ -320,7 +350,6 @@ class AssetControllerTest extends TestCase
 
 		$userA->schools()->attach($school->id);
 		$userB->schools()->attach($school->id);
-
 		$response = $this->actingAs($userA)->put(route('assets.update', ['id' => $assetA->id]), [
 			'school_id' => $assetA->school_id,
 			'category_id' => $assetA->category_id,
@@ -362,8 +391,8 @@ class AssetControllerTest extends TestCase
 			'tag' => '13579'
 		]);
 		$this->assertDatabaseMissing('assets', ['id' => $asset->id, 'name' => 'My First Updated Asset', 'tag' => '13579']);
-		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to update assets');
+		$response->assertRedirect(route('home'));
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 
 	/*
@@ -381,7 +410,7 @@ class AssetControllerTest extends TestCase
 		$user->schools()->attach($school->id);
 
 		$response = $this->actingAs($user)->delete(route('assets.update', ['id' => $asset->id]));
-		$this->assertDatabaseMissing('assets', ['id' => $asset->id, 'name' => 'My First Asset']);
+		$this->assertSoftDeleted($asset);
 		$response->assertRedirect('home');
 		$response->assertSessionHas('alert.success', 'Asset deleted!');
 	}
@@ -406,11 +435,11 @@ class AssetControllerTest extends TestCase
 		$response = $this->actingAs($userA)->delete(route('assets.update', ['id' => $asset->id]));
 		$this->assertDatabaseHas('assets', ['id' => $asset->id, 'name' => 'My First Asset']);
 		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete assets');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 
 		$response = $this->actingAs($userB)->delete(route('assets.update', ['id' => $asset->id]));
 		$this->assertDatabaseHas('assets', ['id' => $asset->id, 'name' => 'My First Asset']);
 		$response->assertRedirect('home');
-		$response->assertSessionHas('alert.danger', 'You do not have access to delete assets');
+		$response->assertSessionHas('alert.danger', 'You are not authorized to perform this action');
 	}
 }
